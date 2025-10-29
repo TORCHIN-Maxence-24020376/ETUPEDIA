@@ -1,0 +1,35 @@
+<svg width="600" height="600" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="500" cy="480" r="440" fill="none" stroke="url(#grad)" stroke-width="35"/>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4CC9F0"/>
+      <stop offset="50%" stop-color="#4361EE"/>
+      <stop offset="100%" stop-color="#7209B7"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <path d="M500 600 
+           C380 540, 260 560, 200 680 
+           C260 640, 360 650, 500 710Z"
+        fill="url(#grad)" opacity="0.9" filter="url(#glow)"/>
+  
+  <path d="M500 600 
+           C620 540, 740 560, 800 680 
+           C740 640, 640 650, 500 710Z"
+        fill="url(#grad)" opacity="0.9" filter="url(#glow)"/>
+
+  <path d="M500 600 C500 680, 500 680, 500 710"
+        stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.8"/>
+
+  <polygon points="500,250 512,280 542,285 520,305 525,335 500,320 475,335 480,305 458,285 488,280"
+           fill="#ffffff" filter="url(#glow)" opacity="0.95"/>
+
+  <ellipse cx="500" cy="720" rx="240" ry="25" fill="#00000033"/>
+</svg>
