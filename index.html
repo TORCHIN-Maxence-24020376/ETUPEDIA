@@ -4,34 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Etupedia - Accueil</title>
-    <link rel="stylesheet" href="assets/css/landing.css"></style>
+    <link rel="stylesheet" href="assets/css/theme.css">
+    <link rel="stylesheet" href="assets/css/landing.css">
+
+    <link rel="icon" type="image/x-icon" href="assets/img/logo.svg">
 </head>
 <body>
-    <div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
-     </div>
+<div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+</div>
 
+<img src="assets/img/logo.svg" alt="Logo Etupedia" class="logo">
+<h1>Etupedia</h1>
+<p>Le savoir partagé</p>
 
-     <img src="assets/img/logo.svg" alt="Logo Etupedia" class="logo">
-     <h1>Etupedia</h1>
-     <p>Le savoir partagé</p>
-     <form class="search-bar" role="search" aria-label="Recherche sur le site">
-        <label for="site-search" class="sr-only">Rechercher un sujet</label>
-        <div class="search-field">
+<form class="search-bar" role="search" aria-label="Recherche sur le site">
+    <label for="site-search" class="sr-only">Rechercher un sujet</label>
+    <div class="search-field">
             <span class="icon" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="11" cy="11" r="7"/>
                     <path d="M21 21l-4.35-4.35"/>
-                  </svg>
-                  
+                </svg>
             </span>
-            <input id="site-search" name="q" type="search" placeholder="Rechercher un sujet…" autocomplete="off" />
-        </div>
-        <button type="submit">
-            <span class="btn-text">Rechercher</span>
-        </button>
-      </form>
+        <input id="site-search" name="q" type="search" placeholder="Rechercher un sujet…" autocomplete="off" />
+    </div>
+    <button type="submit">
+        <span class="btn-text">Rechercher</span>
+    </button>
+</form>
+
+<script src="assets/js/pages-index.js"></script>
+<script src="assets/js/landing-search.js"></script>
 </body>
 </html>

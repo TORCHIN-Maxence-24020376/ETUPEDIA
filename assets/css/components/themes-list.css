@@ -1,0 +1,94 @@
+#themes-list {
+    position: fixed;
+    left: 0;
+    top: 80px;
+    bottom: 0;
+    width: 250px;
+    background-color: var(--sidebar-bg);
+    border-right: 2px solid var(--border-color);
+    overflow-y: auto;
+    padding: 1rem;
+    z-index: 100;
+}
+
+#themes-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#themes-list::-webkit-scrollbar-track {
+    background: var(--sidebar-bg);
+}
+
+#themes-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+#themes-list::-webkit-scrollbar-thumb:hover {
+    background: var(--hover-color);
+}
+
+.theme-category {
+    margin-bottom: 0.5rem;
+}
+
+.theme-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    color: var(--text-color);
+    user-select: none;
+}
+
+.theme-title:hover {
+    background-color: var(--item-hover-bg);
+    color: var(--hover-color);
+}
+
+.theme-arrow {
+    transition: transform 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.theme-category.open .theme-arrow {
+    transform: rotate(90deg);
+}
+
+.theme-links {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-left: 1rem;
+}
+
+.theme-category.open .theme-links {
+    max-height: 500px;
+}
+
+.theme-links a {
+    display: block;
+    padding: 0.5rem 1rem;
+    margin: 0.25rem 0;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.theme-links a:hover {
+    background-color: var(--item-hover-bg);
+    color: var(--hover-color);
+    transform: translateX(5px);
+}
+
+@media (max-width: 1024px) {
+    #themes-list {
+        display: none;
+    }
+}
