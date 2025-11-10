@@ -134,10 +134,13 @@ header h1 {
     color: var(--hover-color);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1400px) {
     .toc-toggle {
         display: block;
     }
+}
+
+@media (max-width: 1024px) {
 
     .search-container {
         max-width: 300px;

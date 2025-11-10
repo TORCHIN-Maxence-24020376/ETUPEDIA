@@ -8,6 +8,7 @@
     top: 100px;
     max-height: calc(100vh - 120px);
     overflow-y: auto;
+    width: 250px;
 }
 
 #table-of-contents::-webkit-scrollbar {
@@ -92,7 +93,7 @@
     display: none;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1400px) {
     /* Modal centré en mode mobile */
     #table-of-contents {
         position: fixed;

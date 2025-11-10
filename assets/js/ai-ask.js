@@ -42,7 +42,7 @@ Contexte étudiant :
 
     try {
         await navigator.clipboard.writeText(prompt);
-        alert("Tu peux utiliser ce prompt sur toute IA pour t'aider.");
+        alert("Tu peux utiliser le prompt dans ton presse papier sur toute IA pour t'aider.");
     } catch (e) {
         console.error("❌ Erreur lors de la copie :", e);
         const ta = document.createElement("textarea");
