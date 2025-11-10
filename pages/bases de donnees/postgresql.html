@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Page ETUPEDIA parlant de PostgreSQL">
+
+    <title>PostgreSQL - Etupedia</title>
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/components/header.css">
+    <link rel="stylesheet" href="../../assets/css/components/themes-list.css">
+    <link rel="stylesheet" href="../../assets/css/components/table-of-contents.css">
+    <link rel="stylesheet" href="../../assets/css/components/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.svg">
+</head>
+<body>
+<header>
+    <a href="/" class="logo-link">
+        <img src="../../assets/img/logo.svg" alt="Etupedia Logo" class="logo">
+        <h1>Etupedia</h1>
+    </a>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" placeholder="Rechercher dans le wiki..." id="search-input">
+        <div class="search-results" id="search-results"></div>
+    </div>
+</header>
+
+<aside id="themes-list"><!-- généré par sidebar-generator.js --></aside>
+
+<section id="main">
+    <main>
+        <h2>Présentation</h2>
+        <p>
+            <strong>PL/pgSQL</strong> est le langage procédural de PostgreSQL. Il permet d'encapsuler des requêtes SQL avec des
+            structures de contrôle (variables, conditions, boucles) et d'exécuter cette logique côté serveur. Objectifs :
+            réduire les allers-retours client/serveur, garantir l'intégrité au plus près des données, mutualiser la logique.
+        </p>
+
+        <h3>Fonctions PL/pgSQL</h3>
+        <p>
+            Une <strong>fonction</strong> exécute de la logique côté serveur et <strong>retourne une valeur</strong> (scalaire, enregistrement ou table).
+            Elle se crée avec <code>CREATE FUNCTION</code> et s'appelle via <code>SELECT</code> (ou dans d'autres requêtes SQL).
+            Référence : <a href="https://www.postgresql.org/docs/current/sql-createfunction.html" target="_blank" rel="noopener">CREATE FUNCTION</a>.
+        </p>
+
+        <h4>Squelette minimal</h4>
+        <pre><code class="language-sql">-- Squelette d'une fonction PL/pgSQL
+CREATE OR REPLACE FUNCTION nom_fonction(
+  -- [argmode] [argname] argtype [DEFAULT expression], ...
+)
+RETURNS retour_type
+LANGUAGE plpgsql
+-- [IMMUTABLE | STABLE | VOLATILE]
+-- [CALLED ON NULL INPUT | RETURNS NULL ON NULL INPUT | STRICT]
+-- [SECURITY INVOKER | SECURITY DEFINER]
+-- [PARALLEL SAFE | RESTRICTED | UNSAFE]
+-- [COST n] [ROWS n] [SET param = value]
+AS $$
+DECLARE
+  -- déclarations locales (ex. v_total integer := 0;)
+BEGIN
+  -- corps de la fonction (requêtes, IF/CASE, boucles, RAISE, etc.)
+  RETURN /* expression du type "retour_type" */;
+END;
+$$;
+</code></pre>
+        <p>Points clés de l'en-tête : volatilité (<code>IMMUTABLE/STABLE/VOLATILE</code>), gestion des <em>NULL</em> (<code>STRICT</code> ≃ <code>RETURNS NULL ON NULL INPUT</code>),
+            sécurité (<code>SECURITY DEFINER</code> exécute avec les droits du créateur), et options d'exécution (<code>COST</code>, <code>PARALLEL</code>, <code>SET</code>).</p>
+
+        <h4>Paramètres</h4>
+        <ul>
+            <li><strong>Modes</strong> : <code>IN</code> (défaut), <code>OUT</code>, <code>INOUT</code>, <code>VARIADIC</code> (liste variable).</li>
+            <li><strong>Valeurs par défaut</strong> : <code>p_limite integer DEFAULT 10</code> → appel possible sans fournir l'argument.</li>
+            <li><strong>Nommage</strong> : les paramètres sont adressables par leur nom dans le corps (<code>p_id</code>, <code>p_code</code>, ...).</li>
+        </ul>
+        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION filtre_cours(p_min int DEFAULT 5)
+RETURNS int LANGUAGE plpgsql AS $$
+DECLARE v_cnt int; BEGIN
+  SELECT COUNT(*) INTO v_cnt FROM Cours WHERE nb_places &gt;= p_min;
+  RETURN v_cnt;
+END; $$;
+
+-- Appels
+SELECT filtre_cours();     -- utilise la valeur par défaut
+SELECT filtre_cours(12);   -- surcharge</code></pre>
+
+        <h4>Retourner un <em>record</em> ou une <em>table</em></h4>
+        <p>Deux approches fréquentes : <code>RETURNS TABLE(...)</code> avec <code>RETURN QUERY</code>, ou <code>RETURNS SETOF type</code>.</p>
+        <pre><code class="language-sql">-- a) RETURNS TABLE + RETURN QUERY
+CREATE OR REPLACE FUNCTION liste_inscriptions(p_etu int)
+RETURNS TABLE(cours_id int, note numeric)
+LANGUAGE plpgsql AS $$
+BEGIN
+  RETURN QUERY
+    SELECT i.cours_id, i.note
+    FROM Inscriptions i
+    WHERE i.etudiant_id = p_etu;
+END; $$;
+
+-- b) RETURNS SETOF &lt;type composite&gt;
+-- Suppose un type composite Inscriptions (table ou type créé via CREATE TYPE)
+CREATE OR REPLACE FUNCTION inscriptions_de(p_etu int)
+RETURNS SETOF Inscriptions
+LANGUAGE plpgsql AS $$
+BEGIN
+  RETURN QUERY SELECT * FROM Inscriptions WHERE etudiant_id = p_etu;
+END; $$;</code></pre>
+
+        <h4>Déclarations, contrôle de flux et erreurs</h4>
+        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION moyenne_cours(p_cours int)
+RETURNS numeric LANGUAGE plpgsql AS $$
+DECLARE v_moy numeric; BEGIN
+  SELECT AVG(note) INTO v_moy FROM Inscriptions WHERE cours_id = p_cours;
+  IF v_moy IS NULL THEN
+    RAISE NOTICE 'Aucune note pour le cours %', p_cours;
+    RETURN NULL;
+  END IF;
+  RETURN v_moy;
+EXCEPTION WHEN division_by_zero THEN
+  RAISE EXCEPTION 'Erreur de calcul';
+END; $$;</code></pre>
+        <p>Outils utiles : <code>IF/ELSIF/ELSE</code>, <code>CASE</code>, boucles <code>FOR</code>/<code>WHILE</code>, <code>RAISE</code> (<em>DEBUG, NOTICE, WARNING, EXCEPTION</em>), bloc <code>EXCEPTION</code>.
+            Voir <a href="https://www.postgresql.org/docs/current/plpgsql.html" target="_blank" rel="noopener">PL/pgSQL — structures</a>.</p>
+
+        <h4>Volatilité et performances</h4>
+        <ul>
+            <li><code>IMMUTABLE</code> : même entrée ⇒ même sortie, sans I/O ni accès table (ex. fonctions purement mathématiques).</li>
+            <li><code>STABLE</code> : peut lire mais pas modifier ; résultat constant durant une requête (idéal pour des lectures).</li>
+            <li><code>VOLATILE</code> (défaut) : peut changer à chaque appel (séquences, <code>now()</code>, etc.).</li>
+        </ul>
+        <p>Bien choisir la volatilité aide l'optimiseur. Voir <a href="https://www.postgresql.org/docs/current/xfunc-volatility.html" target="_blank" rel="noopener">Volatility Categories</a>.</p>
+
+        <h4>Sécurité et configuration</h4>
+        <ul>
+            <li><code>SECURITY INVOKER</code> (défaut) : exécute avec les droits de l'appelant.</li>
+            <li><code>SECURITY DEFINER</code> : exécute avec les droits du propriétaire (penser à fixer un <code>search_path</code> sûr :
+                <code>ALTER FUNCTION ... SET search_path = pg_catalog, public</code> par ex.).</li>
+            <li>Paramètres de session : <code>SET</code> dans la définition pour figer un contexte (ex. <code>SET role</code>, <code>SET timezone</code>).</li>
+        </ul>
+
+        <h4>Exemple complet (commenté)</h4>
+        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION demo_calcul_moyenne(
+  p_cours_id int,
+  p_seuil numeric DEFAULT 0
+)
+RETURNS numeric
+LANGUAGE plpgsql
+STRICT               -- NULL en entrée ⇒ NULL en sortie
+STABLE               -- lecture seule, résultat stable durant la requête
+SET search_path = pg_catalog, public
+AS $$
+DECLARE v_moy numeric; BEGIN
+  SELECT AVG(i.note) INTO v_moy
+  FROM Inscriptions i
+  WHERE i.cours_id = p_cours_id AND i.note &gt;= p_seuil;
+
+  RETURN v_moy;
+END; $$;
+
+-- Appel
+SELECT demo_calcul_moyenne(3, 10);  -- moyenne des notes ≥ 10
+</code></pre>
+
+        <h3>Procédures PL/pgSQL</h3>
+        <p>
+            Une <strong>procédure</strong> ne renvoie pas de valeur et s'exécute avec <code>CALL</code>. Elle vise les traitements
+            opérationnels et le <strong>contrôle explicite des transactions</strong> (ouvrir/valider/annuler) dans le serveur.
+            Référence : <a href="https://www.postgresql.org/docs/current/sql-createprocedure.html" target="_blank" rel="noopener">CREATE PROCEDURE</a>.
+        </p>
+
+        <h4>Squelette minimal</h4>
+        <pre><code class="language-sql">CREATE OR REPLACE PROCEDURE nom_procedure(
+  -- [IN | OUT | INOUT | VARIADIC] nom type [DEFAULT expr], ...
+)
+LANGUAGE plpgsql
+-- [SECURITY INVOKER | SECURITY DEFINER]
+-- [SET param = value]
+AS $$
+BEGIN
+  -- corps (DML, validations, logs, etc.)
+  -- possibilité de COMMIT / ROLLBACK à l'intérieur (cf. Transactions ci‑dessous)
+END;
+$$;
+
+-- Appel
+CALL nom_procedure(...);
+</code></pre>
+
+        <h4>Paramètres (IN / OUT / INOUT / VARIADIC)</h4>
+        <p>Les procédures supportent les mêmes modes que les fonctions. Les paramètres <code>OUT</code> sont renvoyés comme résultat d'appel (selon le client).</p>
+        <pre><code class="language-sql">CREATE OR REPLACE PROCEDURE maj_et_stats(
+  IN p_cours int,
+  IN p_note numeric,
+  INOUT p_nbmaj int,
+  OUT p_moy numeric
+)
+LANGUAGE plpgsql AS $$
+DECLARE v_m numeric; BEGIN
+  UPDATE Inscriptions SET note = p_note WHERE cours_id = p_cours;
+  GET DIAGNOSTICS p_nbmaj = ROW_COUNT;  -- lignes modifiées
+
+  SELECT AVG(note) INTO v_m FROM Inscriptions WHERE cours_id = p_cours;
+  p_moy := v_m;  -- OUT
+END; $$;
+
+-- Appel
+CALL maj_et_stats(3, 12.5, NULL, NULL);
+</code></pre>
+
+        <h4>Transactions dans une procédure</h4>
+        <p>
+            Les <strong>procédures</strong> peuvent exécuter <code>COMMIT</code>/<code>ROLLBACK</code> (et variantes <code>... AND CHAIN</code>) quand elles sont au sommet
+            de la pile d'exécution (pas dans une fonction appelée par <code>SELECT</code>). Penser aux <strong>savepoints</strong> pour isoler des lots.
+            Voir <a href="https://www.postgresql.org/docs/current/plpgsql-transactions.html" target="_blank" rel="noopener">Transaction Management</a>.
+        </p>
+        <pre><code class="language-sql">CREATE OR REPLACE PROCEDURE traitement_batch()
+LANGUAGE plpgsql AS $$
+BEGIN
+  -- Lot A
+  PERFORM etape_a();
+  COMMIT;
+
+  -- Lot B protégé
+  BEGIN
+    SAVEPOINT sp_b;
+    PERFORM etape_b1();
+    PERFORM etape_b2();
+    RELEASE SAVEPOINT sp_b;  -- valide le lot B
+  EXCEPTION WHEN others THEN
+    ROLLBACK TO SAVEPOINT sp_b;  -- annule B seulement
+  END;
+
+  -- Fin
+END; $$;
+</code></pre>
+
+        <h4>Erreurs et diagnostics</h4>
+        <ul>
+            <li><code>GET DIAGNOSTICS var = ROW_COUNT;</code> : nombre de lignes affectées par la dernière commande DML.</li>
+            <li>Utiliser <code>RAISE</code> pour consigner (<em>NOTICE/WARNING</em>) ou interrompre (<em>EXCEPTION</em>).</li>
+        </ul>
+
+        <h3>Triggers</h3>
+        <p>
+            Un <strong>trigger</strong> attache une fonction à un événement (<code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>TRUNCATE</code>),
+            en <em>BEFORE</em> ou <em>AFTER</em>, au niveau <em>ROW</em> (par ligne) ou <em>STATEMENT</em> (une fois par commande).
+            Références : <a href="https://www.postgresql.org/docs/current/plpgsql-trigger.html" target="_blank" rel="noopener">Trigger Functions</a>,
+            <a href="https://www.postgresql.org/docs/current/sql-createtrigger.html" target="_blank" rel="noopener">CREATE TRIGGER</a>.
+        </p>
+
+        <h4>Squelette</h4>
+        <pre><code class="language-sql">-- Fonction de trigger
+CREATE OR REPLACE FUNCTION trg_nom()
+RETURNS trigger AS $$
+BEGIN
+  -- TG_OP (INSERT/UPDATE/DELETE), NEW/OLD, TG_TABLE_NAME, TG_WHEN, TG_LEVEL, TG_ARGV[n]
+  RETURN NEW; -- pour BEFORE/ROW ; RETURN OLD dans certains DELETE ; RETURN NULL pour ignorer la ligne
+END;
+$$ LANGUAGE plpgsql;
+
+-- Déclaration du trigger
+CREATE TRIGGER nom
+BEFORE UPDATE OF col1, col2 ON ma_table
+FOR EACH ROW
+WHEN (NEW.col1 IS DISTINCT FROM OLD.col1)  -- filtre côté trigger
+EXECUTE FUNCTION trg_nom();
+</code></pre>
+
+        <h4>Statement‑level & tables de transition</h4>
+        <p>
+            Les triggers <em>STATEMENT</em> ne voient pas <code>NEW/OLD</code>, mais peuvent référencer toutes les lignes affectées via
+            <strong>tables de transition</strong> (<code>REFERENCING NEW TABLE AS nt OLD TABLE AS ot</code>), pratique pour des réconciliations.
+        </p>
+        <pre><code class="language-sql">CREATE OR REPLACE FUNCTION trg_verif_batch()
+RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE r record; BEGIN
+  -- parcourir toutes les nouvelles lignes de l'instruction
+  FOR r IN SELECT * FROM nt LOOP
+    -- validations globales possibles ici
+  END LOOP;
+  RETURN NULL; -- STATEMENT level
+END; $$;
+
+CREATE TRIGGER verif_batch
+AFTER UPDATE ON Inscriptions
+REFERENCING NEW TABLE AS nt
+FOR EACH STATEMENT EXECUTE FUNCTION trg_verif_batch();
+</code></pre>
+
+        <h4>Déclencheurs contraints (déférables)</h4>
+        <p>
+            Les <em>constraint triggers</em> peuvent être <code>DEFERRABLE</code> et évalués en fin de transaction (utile pour des règles croisées complexes).
+        </p>
+        <pre><code class="language-sql">CREATE CONSTRAINT TRIGGER verif_coherence
+AFTER INSERT OR UPDATE ON Inscriptions
+DEFERRABLE INITIALLY DEFERRED
+FOR EACH ROW EXECUTE FUNCTION trg_nom();
+</code></pre>
+
+        <h4>Exemple générique « journalisation »</h4>
+        <pre><code class="language-sql">CREATE TABLE log_chg (
+  at timestamptz DEFAULT now(),
+  t text, op text, id int, old jsonb, new jsonb
+);
+
+CREATE OR REPLACE FUNCTION trg_log()
+RETURNS trigger AS $$
+BEGIN
+  INSERT INTO log_chg(t, op, id, old, new)
+  VALUES (TG_TABLE_NAME, TG_OP,
+          COALESCE(NEW.id, OLD.id),
+          to_jsonb(OLD), to_jsonb(NEW));
+  RETURN COALESCE(NEW, OLD);
+END; $$ LANGUAGE plpgsql;
+
+CREATE TRIGGER log_all
+AFTER INSERT OR UPDATE OR DELETE ON Etudiants
+FOR EACH ROW EXECUTE FUNCTION trg_log();
+</code></pre>
+
+        <h3>Bonnes pratiques</h3>
+        <ul>
+            <li><strong>Intégrité d'abord</strong> : PK/FK/CHECK et contraintes au niveau schéma avant les triggers.</li>
+            <li><strong>Lisibilité</strong> : nommer les fonctions/paramètres clairement, documenter signatures et effets de bord.</li>
+            <li><strong>Volatilité</strong> adaptée (<code>IMMUTABLE/STABLE/VOLATILE</code>) pour aider l'optimiseur.</li>
+            <li><strong>search_path</strong> explicite en <code>SECURITY DEFINER</code> pour éviter des résolutions de schéma dangereuses.</li>
+            <li><strong>Diagnostics</strong> : utiliser <code>GET DIAGNOSTICS ... ROW_COUNT</code>, et journaliser les opérations sensibles.</li>
+            <li><strong>Éviter les boucles de triggers</strong> : conditions <code>WHEN</code>, <code>IS DISTINCT FROM</code>, et drapeaux.</li>
+            <li><strong>Préférer FOR .. IN SELECT</strong> aux curseurs quand c'est possible (plus simple/rapide).</li>
+        </ul>
+
+        <h3 id="exceptions">Exceptions & gestion d'erreurs</h3>
+        Exceptions & gestion d'erreurs</h3>
+        <p>On peut intercepter des erreurs avec un bloc <code>EXCEPTION</code> (cf. doc PL/pgSQL « Control Structures »).</p>
+        <pre><code class="language-sql">BEGIN
+  -- opérations potentiellement fautives
+EXCEPTION WHEN unique_violation THEN
+  RAISE NOTICE 'doublon détecté';
+  -- traitement alternatif
+WHEN others THEN
+  RAISE; -- relancer
+END;
+</code></pre>
+        <p>Erreurs typiques : <code>unique_violation</code>, <code>foreign_key_violation</code>, <code>division_by_zero</code>, etc. Voir
+            <a href="https://www.postgresql.org/docs/current/plpgsql-control-structures.html#PLPGSQL-ERROR-TRAPPING" target="_blank" rel="noopener">Trapping Errors</a>.</p>
+
+        <h3>Curseurs</h3>
+        <p>Les <strong>curseurs</strong> permettent un traitement ligne-à-ligne quand c'est nécessaire (préférer les boucles <code>FOR .. IN SELECT</code> quand possible).</p>
+        <pre><code class="language-sql">DO $$
+DECLARE c refcursor; r record; BEGIN
+  OPEN c FOR SELECT id, titre FROM Cours ORDER BY id;
+  LOOP
+    FETCH c INTO r; EXIT WHEN NOT FOUND;
+    -- traiter r.id, r.titre
+  END LOOP;
+  CLOSE c;
+END $$ LANGUAGE plpgsql;
+</code></pre>
+        <p>Voir : <a href="https://www.postgresql.org/docs/current/plpgsql-cursors.html" target="_blank" rel="noopener">PL/pgSQL — Cursors</a>.</p>
+
+        <h2>Sources</h2>
+        <ul>
+            <li><a href="https://www.postgresql.org/docs/current/plpgsql.html" target="_blank" rel="noopener">PostgreSQL — PL/pgSQL (overview)</a></li>
+            <li><a href="https://www.postgresql.org/docs/current/sql-createfunction.html" target="_blank" rel="noopener">PostgreSQL — CREATE FUNCTION</a> • <a href="https://doc.postgresql.fr/13/sql-createfunction.html" target="_blank" rel="noopener">version FR</a></li>
+            <li><a href="https://www.postgresql.org/docs/current/sql-createprocedure.html" target="_blank" rel="noopener">PostgreSQL — CREATE PROCEDURE</a></li>
+            <li><a href="https://www.postgresql.org/docs/current/sql-createtrigger.html" target="_blank" rel="noopener">PostgreSQL — CREATE TRIGGER</a> • <a href="https://docs.postgresql.fr/current/sql-createtrigger.html" target="_blank" rel="noopener">version FR</a></li>
+        </ul>
+
+        <article id="ai-section">
+            <p>Besoin d'aide pour comprendre?</p>
+            <button onclick="askAI()" id="ai-ask">
+                Demander à une IA
+            </button>
+        </article>
+    </main>
+
+    <aside id="table-of-contents">
+        <h3>Sommaire</h3>
+        <ul>
+
+        </ul>
+    </aside>
+</section>
+
+<footer>
+    <p>&copy; 2025 Etupedia - Tous droits réservés</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<script src="../../assets/js/pages-index.js" defer></script>
+<script src="../../assets/js/ai-ask.js" defer></script>
+<script src="../../assets/js/page-search.js" defer></script>
+<script src="../../assets/js/sidebar-generator.js" defer></script>
+<script src="../../assets/js/search-ui.js" defer></script>
+<script src="../../assets/js/landing-search.js" defer></script>
+<script src="../../assets/js/toc-generator.js" defer></script>
+
+</body>
+</html>

@@ -1,19 +1,41 @@
 /**
  * Générateur automatique du menu latéral (themes-list)
- * Génère l'arborescence des dossiers et pages à partir de pages-index.js
+ * Utilise les fonctions exposées par pages-index.js
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    generateSidebar();
-    initSidebarInteractions();
+document.addEventListener('DOMContentLoaded', () => {
+    const boot = () => {
+        generateSidebar();
+        initSidebarInteractions();
+    };
+
+    // Si l’index est déjà prêt
+    if (Array.isArray(window.PAGES_INDEX) && window.PAGES_INDEX.length > 0) {
+        boot();
+    } else {
+        // Sinon, on attend le signal envoyé par pages-index.js
+        window.addEventListener('pagesIndexLoaded', boot, { once: true });
+    }
 });
+
+/** Construit une URL absolue depuis la racine du site (évite /pages//pages/...) */
+function resolveFromRoot(url) {
+    const root = (typeof window.getSiteRoot === 'function') ? window.getSiteRoot() : '/';
+    return root + String(url).replace(/^\/+/, ''); // nettoie les / en tête
+}
 
 function generateSidebar() {
     const sidebar = document.getElementById('themes-list');
     if (!sidebar) return;
 
-    const tree = getPagesTree();
-    sidebar.innerHTML = ''; // Vider le contenu existant
+    const getTree = window.getPagesTree;
+    if (typeof getTree !== 'function') {
+        console.warn('[Sidebar] getPagesTree introuvable.');
+        return;
+    }
+
+    const tree = getTree();
+    sidebar.innerHTML = ''; // reset
 
     // Générer les catégories à partir de l'arborescence
     Object.keys(tree).forEach(folderPath => {
@@ -24,11 +46,10 @@ function generateSidebar() {
 
         const titleDiv = document.createElement('div');
         titleDiv.className = 'theme-title';
-
         titleDiv.innerHTML = `
-            ${folder.name.charAt(0).toUpperCase() + folder.name.slice(1)}
-            <span class="theme-arrow">▶</span>
-        `;
+      ${folder.name.charAt(0).toUpperCase() + folder.name.slice(1)}
+      <span class="theme-arrow">▶</span>
+    `;
 
         const linksDiv = document.createElement('div');
         linksDiv.className = 'theme-links';
@@ -36,7 +57,7 @@ function generateSidebar() {
         // Ajouter les pages
         folder.pages.forEach(page => {
             const link = document.createElement('a');
-            link.href = getRootRelativePath(page.url);
+            link.href = resolveFromRoot(page.url); // <- clé : toujours depuis la racine
             link.textContent = page.title;
             link.title = page.description || page.title;
             linksDiv.appendChild(link);
@@ -50,30 +71,9 @@ function generateSidebar() {
 
 function initSidebarInteractions() {
     const themeCategories = document.querySelectorAll('.theme-category');
-
     themeCategories.forEach(category => {
         const title = category.querySelector('.theme-title');
-
         if (!title) return;
-
-        title.addEventListener('click', function() {
-            category.classList.toggle('open');
-        });
+        title.addEventListener('click', () => category.classList.toggle('open'));
     });
-}
-
-/**
- * Calcule le chemin relatif à la racine en fonction de la page actuelle
- */
-function getRootRelativePath(url) {
-    const currentPath = window.location.pathname;
-    const depth = (currentPath.match(/\//g) || []).length - 1;
-
-    if (currentPath.includes('/pages/')) {
-        const pagesDepth = currentPath.split('/pages/')[1].split('/').length - 1;
-        const prefix = '../'.repeat(pagesDepth);
-        return prefix + url;
-    }
-
-    return url;
 }

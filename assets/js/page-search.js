@@ -1,8 +1,3 @@
-
-/**
- * Recherche dans le contenu de la page actuelle
- */
-
 function searchInCurrentPage(query) {
     const main = document.querySelector('main');
     if (!main) return [];
@@ -73,14 +68,10 @@ function searchInCurrentPage(query) {
 
 function findClosestHeading(element) {
     let current = element.previousElementSibling;
-
     while (current) {
-        if (current.matches('h2, h3, h4')) {
-            return current;
-        }
+        if (current.matches('h2, h3, h4')) return current;
         current = current.previousElementSibling;
     }
-
     return null;
 }
 
@@ -89,15 +80,10 @@ function scrollToElement(element) {
 
     if (element.tagName === 'P' || element.tagName === 'CODE') {
         const heading = findClosestHeading(element);
-        if (heading) {
-            targetElement = heading;
-        }
+        if (heading) targetElement = heading;
     }
 
-    targetElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-    });
+    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
     targetElement.style.transition = 'background-color 0.3s ease';
     const originalBg = targetElement.style.backgroundColor;

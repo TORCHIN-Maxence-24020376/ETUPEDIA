@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Template - Etupedia</title>
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/components/header.css">
+    <link rel="stylesheet" href="../../assets/css/components/themes-list.css">
+    <link rel="stylesheet" href="../../assets/css/components/table-of-contents.css">
+    <link rel="stylesheet" href="../../assets/css/components/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.svg">
+</head>
+<body>
+<header>
+    <a href="/" class="logo-link">
+        <img src="../../assets/img/logo.svg" alt="Etupedia Logo" class="logo">
+        <h1>Etupedia</h1>
+    </a>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" placeholder="Rechercher dans le wiki..." id="search-input">
+        <div class="search-results" id="search-results">
+            <!-- Résultats générés dynamiquement -->
+        </div>
+    </div>
+
+    <button class="toc-toggle">📑 Sommaire</button>
+</header>
+
+<aside id="themes-list">
+    <!-- Généré automatiquement par sidebar-generator.js -->
+</aside>
+
+<section id="main">
+    <main>
+        <h2>Titre principal de la page</h2>
+        <p>Bienvenue sur Etupedia, votre wiki statique pour organiser vos connaissances.</p>
+
+        <h3>Première section</h3>
+        <p>Ceci est un paragraphe d'exemple. Vous pouvez ajouter du contenu en modifiant directement le HTML.</p>
+
+        <p>Exemple de code inline : <code>console.log("Hello World")</code></p>
+
+        <pre><code class="language-python">// Exemple de bloc de code
+def caca ():
+    print("caca")
+
+caca()
+        </code></pre>
+
+        <h3>Deuxième section</h3>
+        <p>Continuez à ajouter votre contenu ici...</p>
+
+        <h4>Sous-section</h4>
+        <p>Les sous-sections seront également ajoutées au sommaire.</p>
+
+        <h2>Autre titre principal</h2>
+        <p>Le sommaire est généré automatiquement à partir de tous les titres h2, h3 et h4.</p>
+    </main>
+
+    <aside id="table-of-contents">
+        <h3>Sommaire</h3>
+        <ul>
+            <!-- Généré automatiquement par JavaScript -->
+        </ul>
+    </aside>
+</section>
+
+<footer>
+    <p>&copy; 2025 Etupedia - Tous droits réservés</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<script src="../../assets/js/pages-index.js" defer></script>
+<script src="../../assets/js/page-search.js" defer></script>
+<script src="../../assets/js/sidebar-generator.js" defer></script>
+<script src="../../assets/js/search-ui.js" defer></script>
+<script src="../../assets/js/landing-search.js" defer></script>
+<script src="../../assets/js/toc-generator.js" defer></script>
+
+</body>
+</html>

@@ -1,7 +1,3 @@
-/**
- * Fonctionnalité de recherche pour la page d'accueil
- */
-
 document.addEventListener('DOMContentLoaded', function() {
     initLandingSearch();
 });

@@ -1,0 +1,17 @@
+[
+  {
+    "title": "📄PostGreSQL",
+    "url": "pages/bases de donnees/postgresql.html",
+    "category": "Bases de données",
+    "folder": "bases de donnees",
+    "tags": [
+      "PostgreSQL",
+      "PL/pgSQL",
+      "Fonctions",
+      "Procédures",
+      "Triggers",
+      "Transactions"
+    ],
+    "description": "Page ETUPEDIA parlant de PostgreSQL"
+  }
+]

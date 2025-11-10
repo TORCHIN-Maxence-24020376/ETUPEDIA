@@ -80,6 +80,40 @@ main pre {
     border: 1px solid var(--border-color);
 }
 
+a{
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.logo-link{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#ai-section{
+    margin-top: 2rem;
+    width: 100%;
+}
+
+#ai-ask{
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    font-size: 1rem;
+    background-color: var(--link-color);
+    color: var(--primary-color);
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    &:hover{
+        background-color: var(--hover-color);
+        color: var(--primary-color);
+    }
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     #main {

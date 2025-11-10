@@ -6,7 +6,8 @@
     --text-color: #333333;
     --title-color: #1a1a1a;
     --heading-color: #2c3e50;
-    --hover-color: #3498db;
+    --hover-color: #2399e8;
+    --link-color: #3498db;
 
     --header-bg: #ffffff;
     --sidebar-bg: #ffffff;
@@ -24,7 +25,8 @@
         --text-color: #b8b8b8;
         --title-color: #10b981;
         --heading-color: #10b981;
-        --hover-color: #10b981;
+        --hover-color: #0bde98;
+        --link-color: #10b981;
 
         --header-bg: #252525;
         --sidebar-bg: #2d2d2d;

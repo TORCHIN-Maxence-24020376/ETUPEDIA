@@ -1,43 +1,49 @@
-/**
- * Index automatique des pages du wiki
- * Ce fichier sera généré automatiquement en scannant le dossier pages/
- * 
- * Structure attendue dans chaque page HTML :
- * <meta name="wiki-tags" content="tag1, tag2, tag3">
- * <meta name="wiki-category" content="Catégorie">
- * <meta name="wiki-description" content="Description de la page">
- */
+let PAGES_INDEX = [];
 
-const PAGES_INDEX = [
-    // Exemple de structure - à remplir automatiquement ou manuellement
-    {
-        title: "Template",
-        url: "pages/template/template.html",
-        category: "Template",
-        folder: "template",
-        tags: ["exemple", "template"],
-        description: "Page template pour créer de nouvelles pages"
+/** Trouve la racine du site (utile quand on est dans /pages/...) */
+function getSiteRoot() {
+    const path = window.location.pathname;
+    if (path.includes('/pages/')) {
+        const root = path.split('/pages/')[0];
+        return root.endsWith('/') ? root : root + '/';
     }
-];
+    // on est déjà à la racine
+    return '/';
+}
 
-/**
- * Fonction pour obtenir l'arborescence des dossiers et fichiers
- */
+/** Charge dynamiquement le fichier JSON des pages */
+async function loadPagesIndex() {
+    try {
+        const root = getSiteRoot();
+        const response = await fetch(`${root}assets/js/routes.json`);
+        if (!response.ok) throw new Error("Erreur lors du chargement de l'index");
+        PAGES_INDEX = await response.json();
+    } catch (err) {
+        console.error("[Wiki] Impossible de charger l'index :", err);
+        PAGES_INDEX = [];
+    } finally {
+        // avertit les autres scripts que l'index est prêt (même en cas d'échec)
+        window.dispatchEvent(new Event('pagesIndexLoaded'));
+    }
+}
+
+/** Construit l’arborescence des dossiers et fichiers */
 function getPagesTree() {
     const tree = {};
-    
+
     PAGES_INDEX.forEach(page => {
-        const pathParts = page.url.replace('pages/', '').split('/');
-        const fileName = pathParts.pop();
+        const pathParts = String(page.url).replace(/^\/?pages\//, '').split('/');
+        // retire le fichier
+        pathParts.pop();
         const folderPath = pathParts.join('/') || 'root';
-        
+
         if (!tree[folderPath]) {
             tree[folderPath] = {
                 name: pathParts[pathParts.length - 1] || 'Pages',
                 pages: []
             };
         }
-        
+
         tree[folderPath].pages.push({
             title: page.title,
             url: page.url,
@@ -45,62 +51,53 @@ function getPagesTree() {
             description: page.description
         });
     });
-    
+
     return tree;
 }
 
-/**
- * Fonction pour rechercher dans l'index des pages
- */
+/** Recherche dans l’index des pages */
 function searchInPages(query) {
     if (!query || query.length < 2) return [];
-    
-    const queryLower = query.toLowerCase();
+
+    const q = query.toLowerCase();
     const results = [];
-    
+
     PAGES_INDEX.forEach(page => {
         let score = 0;
-        let matchedIn = [];
-        
-        // Recherche dans le titre (poids: 10)
-        if (page.title.toLowerCase().includes(queryLower)) {
-            score += 10;
-            matchedIn.push('title');
+        const matchedIn = [];
+
+        if (page.title?.toLowerCase().includes(q)) {
+            score += 10; matchedIn.push('title');
         }
-        
-        // Recherche dans la catégorie (poids: 5)
-        if (page.category && page.category.toLowerCase().includes(queryLower)) {
-            score += 5;
-            matchedIn.push('category');
+        if (page.category?.toLowerCase().includes(q)) {
+            score += 5; matchedIn.push('category');
         }
-        
-        // Recherche dans la description (poids: 3)
-        if (page.description && page.description.toLowerCase().includes(queryLower)) {
-            score += 3;
-            matchedIn.push('description');
+        if (page.description?.toLowerCase().includes(q)) {
+            score += 3; matchedIn.push('description');
         }
-        
-        // Recherche dans les tags (poids: 7)
-        if (page.tags) {
+        if (Array.isArray(page.tags)) {
             page.tags.forEach(tag => {
-                if (tag.toLowerCase().includes(queryLower)) {
-                    score += 7;
-                    matchedIn.push('tags');
+                if (String(tag).toLowerCase().includes(q)) {
+                    score += 7; matchedIn.push('tags');
                 }
             });
         }
-        
+
         if (score > 0) {
-            results.push({
-                ...page,
-                score: score,
-                matchedIn: [...new Set(matchedIn)]
-            });
+            results.push({ ...page, score, matchedIn: [...new Set(matchedIn)] });
         }
     });
-    
-    // Trier par score décroissant
+
     results.sort((a, b) => b.score - a.score);
-    
     return results;
 }
+
+/* Expose en global (utilisé par d’autres scripts) */
+window.PAGES_INDEX    = PAGES_INDEX;
+window.getPagesTree   = getPagesTree;
+window.searchInPages  = searchInPages;
+window.loadPagesIndex = loadPagesIndex;
+window.getSiteRoot    = getSiteRoot;
+
+/* Lance le chargement automatiquement */
+window.pagesIndexReady = loadPagesIndex();
