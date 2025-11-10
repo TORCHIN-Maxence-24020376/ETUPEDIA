@@ -116,10 +116,9 @@ a{
 }
 
 /* Responsive */
-@media (max-width: 1200px) {
-    #main {
-        grid-template-columns: 1fr 200px;
-        padding-left: 250px;
+@media (max-width: 1400px) {
+    main{
+        max-width: 100%;
     }
 }
 
