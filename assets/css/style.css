@@ -118,7 +118,7 @@ a{
 /* Responsive */
 @media (max-width: 1400px) {
     main{
-        max-width: 100%;
+        max-width: 70vw;
     }
 }
 
@@ -126,6 +126,10 @@ a{
     #main {
         grid-template-columns: 1fr;
         padding-left: 2rem;
+    }
+
+    main{
+        max-width: 90vw;
     }
 }
 
