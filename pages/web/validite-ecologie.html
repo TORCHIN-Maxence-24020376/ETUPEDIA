@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Valider son HTML/CSS avec les validateurs W3C et concevoir des pages sobres en énergie : performances, accessibilité, empreinte CO₂.">
+    <title>Validité & écologie - Etupedia</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/components/header.css">
+    <link rel="stylesheet" href="../../assets/css/components/themes-list.css">
+    <link rel="stylesheet" href="../../assets/css/components/table-of-contents.css">
+    <link rel="stylesheet" href="../../assets/css/components/footer.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <link rel="canonical" href="https://etupedia.netlify.app/pages/web/validite-ecologie.html">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="ETUPEDIA">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Validité & écologie — W3C + éco-conception">
+    <meta property="og:description" content="Comment valider son HTML/CSS W3C et réduire l’empreinte environnementale d’un site.">
+    <meta property="og:url" content="https://etupedia.netlify.app/pages/web/validite-ecologie.html">
+    <meta property="og:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta property="og:image:alt" content="Logo ETUPEDIA">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Validité & écologie — W3C + éco-conception">
+    <meta name="twitter:description" content="Checklists, outils et snippets pour un web plus sobre et valide.">
+    <meta name="twitter:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta name="twitter:image:alt" content="Logo ETUPEDIA">
+
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.svg">
+
+    <style>
+        .demo { border:1px dashed #334155; border-radius:10px; padding:12px; margin:.5rem 0 1rem; background:#0b1220; color:#e5e7eb; }
+        .stack { display:flex; flex-wrap:wrap; gap:.5rem; align-items:center }
+        .kbd { background:#111827; border:1px solid #374151; border-radius:6px; padding:6px 8px; color:#e5e7eb; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:.95em }
+        .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#111827; border:1px solid #374151; }
+        .panel { background:#0f172a; border:1px solid #1f2937; border-radius:10px; padding:.75rem 1rem; }
+        .btn { padding:6px 12px; border-radius:10px; background:#275afe; color:#fff; border:none; cursor:pointer; transition:transform .15s, box-shadow .15s }
+        .btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(39,90,254,.25)}
+        .ok { color:#22c55e } .warn { color:#f59e0b } .err { color:#ef4444 }
+        @media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+        .check ul { margin:.5rem 0 0 1.2rem }
+        .muted { opacity:.85 }
+        .mono { font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace }
+    </style>
+</head>
+<body>
+<header>
+    <a href="/" class="logo-link">
+        <img src="../../assets/img/logo.svg" alt="Etupedia Logo" class="logo">
+        <h1>Etupedia</h1>
+    </a>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" placeholder="Rechercher dans le wiki..." id="search-input">
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <button class="toc-toggle">📑 Sommaire</button>
+</header>
+
+<aside id="themes-list"></aside>
+
+<section id="main">
+    <main>
+        <h2>Validité & écologie : pourquoi c’est important</h2>
+        <p>
+            Un site <strong>valide</strong> (W3C) et <strong>éco-conçu</strong> est plus fiable, plus accessible, plus rapide et
+            consomme moins de ressources (batterie, CPU, réseau). Ci-dessous : méthodes, checklists et exemples pour intégrer
+            ces pratiques dans tes projets ETUPEDIA.
+        </p>
+
+        <nav class="see-also">
+            <p><strong>Voir aussi :</strong> <a href="./html.html">HTML</a> • <a href="./css.html">CSS</a> • <a href="./javascript.html">JavaScript</a></p>
+        </nav>
+
+        <h3>Valider son HTML & CSS (W3C)</h3>
+        <div class="grid">
+            <div class="panel check">
+                <h4>HTML — Nu HTML Checker</h4>
+                <ul>
+                    <li>Ouvre le validateur et colle l’URL ou le code source.</li>
+                    <li>Corrige les erreurs : balises non fermées, attributs invalides, structure des titres, roles ARIA.</li>
+                    <li>Répète jusqu’à <span class="ok">0 erreur</span>. Les “warnings” sont souvent utiles à traiter aussi.</li>
+                </ul>
+                <pre><code class="language-html">&lt;img src="logo.png" alt="Logo ETUPEDIA"&gt;
+&lt;nav aria-label="Navigation principale"&gt;...&lt;/nav&gt;</code></pre>
+            </div>
+            <div class="panel check">
+                <h4>CSS — W3C CSS Validator</h4>
+                <ul>
+                    <li>Valide tes feuilles : erreurs de syntaxe, propriétés inconnues, unités incohérentes.</li>
+                    <li>Favorise des <span class="mono">:root { --tokens }</span> et évite <span class="mono">!important</span> inutiles.</li>
+                </ul>
+                <pre><code class="language-css">:root { --brand:#275afe; }
+.button { background: var(--brand); border-radius: 12px; }</code></pre>
+            </div>
+        </div>
+
+        <h3>Accessibilité & base SEO (rapide)</h3>
+        <ul>
+            <li>Hiérarchie des titres logique (un <code>h1</code> par page, puis <code>h2</code>, <code>h3</code>…)</li>
+            <li>Contraste suffisant, focus visible, alternatives textuelles, labels reliés aux champs.</li>
+            <li>Métadonnées : <code>&lt;title&gt;</code>, <code>meta description</code>, liens internes, balise <code>canonical</code>.</li>
+        </ul>
+
+        <h2>Écoconception : principes & actions concrètes</h2>
+        <p class="muted">Idée clé : <em>moins de données, moins de complexité, plus de sobriété</em> → meilleures perfs et moins d’énergie.</p>
+
+        <h3>1) Réduire le poids des pages</h3>
+        <ul>
+            <li>Images : formats modernes (AVIF/WebP), dimensions adaptées, <code>loading="lazy"</code>, <code>decoding="async"</code>.</li>
+            <li>Vidéo : poster optimisé, pas d’autoplay, bitrate adapté, sous-titres.</li>
+            <li>Polices : self-host, <code>font-display: swap</code>, limiter les variantes.</li>
+            <li>CSS/JS : minifier, supprimer le code mort, charger en <code>defer</code>, splitter par page si besoin.</li>
+        </ul>
+        <pre><code class="language-html">&lt;img src="hero.avif" width="1200" height="630" alt="Bannière"
+     loading="lazy" decoding="async"&gt;
+&lt;script src="/assets/js/page.js" defer&gt;&lt;/script&gt;</code></pre>
+
+        <h3>2) Limiter le travail CPU & réseau</h3>
+        <ul>
+            <li>Éviter les timers et animations permanentes ; respecter <code>prefers-reduced-motion</code>.</li>
+            <li>Déclencher les requêtes au bon moment (intersections, interactions).</li>
+            <li>Mettre en cache (HTTP, <em>immutable</em>, Service Worker si PWA), compresser (Brotli), HTTP/2/3.</li>
+        </ul>
+        <pre><code class="language-css">@media (prefers-reduced-motion: reduce) {
+  * { animation:none; transition:none; }
+}</code></pre>
+
+        <h3>3) UI sobre & accessible</h3>
+        <ul>
+            <li>Éviter les carrousels lourds, privilégier texte + image optimisée.</li>
+            <li>Boutons/liaisons clairs, focus visible, contrastes AA/AAA.</li>
+            <li>Dark mode : utile sur OLED, mais penser d’abord à la simplicité (moins d’assets, moins de JS).</li>
+        </ul>
+
+        <h3>Exemple : image responsive sobre</h3>
+        <pre><code class="language-html">&lt;picture&gt;
+  &lt;source type="image/avif" srcset="/img/cover-800.avif 800w, /img/cover-1600.avif 1600w" sizes="(max-width:900px) 90vw, 800px"&gt;
+  &lt;source type="image/webp" srcset="/img/cover-800.webp 800w, /img/cover-1600.webp 1600w" sizes="(max-width:900px) 90vw, 800px"&gt;
+  &lt;img src="/img/cover-800.jpg" width="800" height="450" alt="Couverture" loading="lazy" decoding="async"&gt;
+&lt;/picture&gt;</code></pre>
+
+        <h3>Mesurer & suivre</h3>
+        <ul>
+            <li>Core Web Vitals (Lighthouse) : LCP, CLS, INP. Corriger les lenteurs réelles.</li>
+            <li>Eco-index / Website Carbon : estimation de l’empreinte (à prendre comme indicateurs, pas des absolus).</li>
+            <li>Budget de performance : se fixer des seuils (poids total, requêtes, JS exécutable).</li>
+        </ul>
+
+        <h3>Mini-démo : calcul grossier de “budget poids”</h3>
+        <div class="demo">
+            <div class="stack">
+                <label>HTML (KB) <input id="b-html" class="kbd" type="number" value="30"></label>
+                <label>CSS (KB) <input id="b-css" class="kbd" type="number" value="40"></label>
+                <label>JS (KB) <input id="b-js" class="kbd" type="number" value="150"></label>
+                <label>Images (KB) <input id="b-img" class="kbd" type="number" value="350"></label>
+                <button id="b-run" class="btn">Estimer</button>
+                <span class="pill">budget cible : ≤ 500 KB</span>
+            </div>
+            <p id="b-out" class="panel">Clique “Estimer”.</p>
+        </div>
+
+        <h2>Workflow recommandé</h2>
+        <ol>
+            <li>Coder sémantique (HTML) + styles sobres (CSS) + interactions ciblées (JS).</li>
+            <li>Valider (Nu HTML Checker, CSS Validator).</li>
+            <li>Auditer (Lighthouse) + corriger perfs & accessibilité.</li>
+            <li>Optimiser médias, minifier, activer cache/HTTP/2/3, COMP/Brotli.</li>
+            <li>Suivre dans le temps (CI de lint/format/validate, budgets Lighthouse).</li>
+        </ol>
+
+        <h2>Sources</h2>
+        <ul>
+            <li><a href="https://validator.w3.org/nu/" target="_blank" rel="noopener">W3C — Nu HTML Checker</a></li>
+            <li><a href="https://jigsaw.w3.org/css-validator/" target="_blank" rel="noopener">W3C — CSS Validator</a></li>
+            <li><a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener">WCAG — Web Content Accessibility Guidelines</a></li>
+            <li><a href="https://ecoresponsable.numerique.gouv.fr/publications/referentiel-general-ecoconception/" target="_blank" rel="noopener">RGESN — Référentiel général d’écoconception des services numériques (DINUM)</a></li>
+            <li><a href="https://web.dev/vitals/" target="_blank" rel="noopener">web.dev — Core Web Vitals</a> • <a href="https://developer.chrome.com/docs/lighthouse/overview/" target="_blank" rel="noopener">Lighthouse</a></li>
+            <li><a href="https://www.websitecarbon.com/" target="_blank" rel="noopener">Website Carbon Calculator</a> • <a href="https://www.ecoindex.fr/quest-ce-que-ecoindex/" target="_blank" rel="noopener">Ecoindex</a></li>
+            <li><a href="https://www.greenit.fr" target="_blank" rel="noopener">GreenIT.fr</a></li>
+        </ul>
+
+        <article id="ai-section">
+            <p>Besoin d'aide pour comprendre?</p>
+            <button onclick="askAI()" id="ai-ask">Demander à une IA</button>
+        </article>
+    </main>
+
+    <aside id="table-of-contents">
+        <h3>Sommaire</h3>
+        <ul></ul>
+    </aside>
+</section>
+
+<footer>
+    <p>&copy; 2025 Etupedia - Tous droits réservés</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<script src="../../assets/js/ai-ask.js" defer></script>
+<script src="../../assets/js/pages-index.js" defer></script>
+<script src="../../assets/js/page-search.js" defer></script>
+<script src="../../assets/js/sidebar-generator.js" defer></script>
+<script src="../../assets/js/search-ui.js" defer></script>
+<script src="../../assets/js/landing-search.js" defer></script>
+<script src="../../assets/js/toc-generator.js" defer></script>
+
+<script>
+    (() => {
+        const $ = (s, r=document) => r.querySelector(s);
+        const out = $('#b-out');
+        $('#b-run')?.addEventListener('click', () => {
+            const v = (id) => Math.max(0, parseFloat($(id).value) || 0);
+            const total = v('#b-html') + v('#b-css') + v('#b-js') + v('#b-img');
+            let cls = 'ok', msg = 'Très bien, page légère.';
+            if (total > 750) { cls = 'err'; msg = 'Beaucoup trop lourd : optimisations indispensables (médias/JS).'; }
+            else if (total > 500) { cls = 'warn'; msg = 'Au-dessus du budget : compresse, minifie, lazy-load, formats modernes.'; }
+            out.innerHTML = `<strong>Total :</strong> ${total.toFixed(0)} KB — <span class="${cls}">${msg}</span>`;
+        });
+    })();
+</script>
+</body>
+</html>

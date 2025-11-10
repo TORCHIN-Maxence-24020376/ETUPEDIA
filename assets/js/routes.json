@@ -68,5 +68,27 @@
       "Sécurité"
     ],
     "description": "JS moderne pour le web : manipulation du DOM, gestion d’événements, modules ES, fetch/JSON, async/await et sécurité côté client."
+  },
+  {
+    "title": "📄Validité & écologie",
+    "url": "pages/web/validite-ecologie.html",
+    "category": "Web",
+    "folder": "web",
+    "tags": [
+      "W3C",
+      "Validation",
+      "HTML",
+      "CSS",
+      "Accessibilité",
+      "Écoconception",
+      "GreenIT",
+      "Performance",
+      "Core Web Vitals",
+      "RGESN",
+      "CO2",
+      "Énergie"
+    ],
+    "description": "Valider HTML/CSS (W3C) et éco-concevoir un site : checklists, outils, performances et bonnes pratiques pour réduire l’empreinte."
   }
+
 ]
