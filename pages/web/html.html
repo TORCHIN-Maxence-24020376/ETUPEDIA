@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HTML : bases, structure sémantique, formulaires accessibles, puis SEO avancé (Open Graph, Twitter Cards, canonical).">
+    <title>HTML - Etupedia</title>
+
+    <!-- Styles globaux -->
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/components/header.css">
+    <link rel="stylesheet" href="../../assets/css/components/themes-list.css">
+    <link rel="stylesheet" href="../../assets/css/components/table-of-contents.css">
+    <link rel="stylesheet" href="../../assets/css/components/footer.css">
+
+    <!-- Code highlight -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <!-- Métadonnées wiki -->
+    <meta name="wiki-tags" content="HTML,Structure,Sémantique,Formulaires,Accessibilité,SEO,Open Graph,Twitter Cards,Canonical">
+    <meta name="wiki-category" content="Web">
+    <meta name="wiki-description" content="Bases & structure HTML, puis référencement et partage social avec Open Graph/Twitter.">
+
+    <!-- Canonical & Social -->
+    <link rel="canonical" href="https://etupedia.netlify.app/pages/web/html.html">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="ETUPEDIA">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="HTML — bases, structure & SEO avancé">
+    <meta property="og:description" content="Structure sémantique, formulaires accessibles, puis Open Graph, Twitter Cards, canonical.">
+    <meta property="og:url" content="https://etupedia.netlify.app/pages/web/html.html">
+    <meta property="og:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta property="og:image:alt" content="Logo ETUPEDIA">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HTML — bases, structure & SEO avancé">
+    <meta name="twitter:description" content="Du HTML sémantique au partage social (OG/Twitter).">
+    <meta name="twitter:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta name="twitter:image:alt" content="Logo ETUPEDIA">
+
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.svg">
+</head>
+<body>
+<header>
+    <a href="/" class="logo-link">
+        <img src="../../assets/img/logo.svg" alt="Etupedia Logo" class="logo">
+        <h1>Etupedia</h1>
+    </a>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" placeholder="Rechercher dans le wiki..." id="search-input">
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <button class="toc-toggle">📑 Sommaire</button>
+</header>
+
+<aside id="themes-list"></aside>
+
+<section id="main">
+    <main>
+        <h2>HTML : bases & structure</h2>
+        <p>
+            HTML (<em>HyperText Markup Language</em>) donne du sens au contenu. Un HTML bien structuré améliore
+            l’accessibilité, le référencement et la maintenabilité. Les sections ci-dessous couvrent la structure,
+            les balises sémantiques, le texte/média et les formulaires accessibles.
+        </p>
+
+        <nav class="see-also">
+            <p><strong>Voir aussi :</strong> <a href="./css.html">CSS</a> • <a href="./javascript.html">JavaScript</a></p>
+        </nav>
+
+        <h3>Structure minimale d’un document</h3>
+        <p>Un squelette propre, prêt pour un site responsif :</p>
+        <pre><code class="language-html">&lt;!doctype html&gt;
+&lt;html lang="fr"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;Titre de la page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;header&gt;...&lt;/header&gt;
+  &lt;main&gt;Contenu principal&lt;/main&gt;
+  &lt;footer&gt;...&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <h3>Balises sémantiques clés</h3>
+        <ul>
+            <li><code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;aside&gt;</code>, <code>&lt;footer&gt;</code> : donnent le rôle des zones.</li>
+            <li>Hiérarchie des titres : un seul <code>h1</code> logique, puis <code>h2</code>, <code>h3</code>… (pas de saut arbitraire).</li>
+            <li>Texte : <code>&lt;p&gt;</code>, <code>&lt;strong&gt;</code>, <code>&lt;em&gt;</code>, citations <code>&lt;blockquote&gt;</code>, code <code>&lt;code&gt;</code>.</li>
+        </ul>
+
+        <h4>Exemple structuré</h4>
+        <pre><code class="language-html">&lt;article&gt;
+  &lt;header&gt;
+    &lt;h1&gt;Comprendre la sémantique&lt;/h1&gt;
+    &lt;p&gt;Mise à jour &lt;time datetime="2025-11-10"&gt;10/11/2025&lt;/time&gt;&lt;/p&gt;
+  &lt;/header&gt;
+
+  &lt;section&gt;
+    &lt;h2&gt;Pourquoi c'est important ?&lt;/h2&gt;
+    &lt;p&gt;La sémantique aide le SEO, les lecteurs d'écran et les outils d'indexation.&lt;/p&gt;
+  &lt;/section&gt;
+
+  &lt;footer&gt;Rédaction : &lt;a href="#" rel="author"&gt;Équipe ETUPEDIA&lt;/a&gt;&lt;/footer&gt;
+&lt;/article&gt;</code></pre>
+
+        <h3>Texte, images et liens accessibles</h3>
+        <ul>
+            <li>Images : texte alternatif utile (pas décoratif), <code>&lt;figure&gt;</code> + <code>&lt;figcaption&gt;</code> pour légender.</li>
+            <li>Liens descriptifs (“Voir le tutoriel HTML”) plutôt que “Clique ici”.</li>
+            <li>Préférer <code>textContent</code> à <code>innerHTML</code> côté JS quand il y a des données utilisateur.</li>
+        </ul>
+        <pre><code class="language-html">&lt;figure&gt;
+  &lt;img src="/assets/img/logo-og.png" alt="Logo ETUPEDIA"&gt;
+  &lt;figcaption&gt;Logo officiel d'ETUPEDIA&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+
+        <h3>Formulaires accessibles (A11y)</h3>
+        <ul>
+            <li>Relier chaque <code>&lt;label&gt;</code> à un <code>id</code> d’input.</li>
+            <li>Utiliser les bons <code>type</code> (<code>email</code>, <code>date</code>, <code>number</code>, etc.), <code>required</code>, et messages d’erreur clairs.</li>
+            <li>Regrouper avec <code>&lt;fieldset&gt;</code> / <code>&lt;legend&gt;</code> si nécessaire.</li>
+        </ul>
+        <pre><code class="language-html">&lt;form&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Newsletter&lt;/legend&gt;
+    &lt;label for="email"&gt;Email&lt;/label&gt;
+    &lt;input id="email" name="email" type="email" required&gt;
+    &lt;button&gt;S'inscrire&lt;/button&gt;
+  &lt;/fieldset&gt;
+&lt;/form&gt;</code></pre>
+
+        <h2>Référencement & partage avancé (SEO, Open Graph, Twitter Cards)</h2>
+        <p>Ces métadonnées aident les moteurs et les réseaux sociaux à présenter correctement ta page.</p>
+
+        <h3>Balises SEO essentielles</h3>
+        <ul>
+            <li><strong>Titre</strong> unique et pertinent (≈ 50–60 caractères).</li>
+            <li><strong>Méta description</strong> claire (≈ 150–160 caractères), sans keyword stuffing.</li>
+            <li><strong>Canonical</strong> : URL de référence si le contenu existe à plusieurs adresses.</li>
+        </ul>
+        <pre><code class="language-html">&lt;title&gt;HTML — bases, structure &amp; SEO avancé&lt;/title&gt;
+&lt;meta name="description" content="Structure sémantique, formulaires accessibles, Open Graph, Twitter Cards."&gt;
+&lt;link rel="canonical" href="https://exemple.com/pages/web/html.html"&gt;</code></pre>
+
+        <h3>Open Graph (Facebook, LinkedIn, Discord…)</h3>
+        <p>Permet d’afficher un beau “aperçu” (titre, description, image) quand on partage un lien.</p>
+        <pre><code class="language-html">&lt;meta property="og:locale" content="fr_FR"&gt;
+&lt;meta property="og:site_name" content="ETUPEDIA"&gt;
+&lt;meta property="og:type" content="article"&gt;
+&lt;meta property="og:title" content="HTML — bases, structure &amp; SEO"&gt;
+&lt;meta property="og:description" content="Du HTML sémantique au partage social."&gt;
+&lt;meta property="og:url" content="https://exemple.com/pages/web/html.html"&gt;
+&lt;meta property="og:image" content="https://exemple.com/assets/img/logo-og.png"&gt;
+&lt;meta property="og:image:alt" content="Logo ETUPEDIA"&gt;</code></pre>
+
+        <h3>Twitter Cards</h3>
+        <p>Très similaire à OG. Le type le plus courant pour un article est <code>summary_large_image</code>.</p>
+        <pre><code class="language-html">&lt;meta name="twitter:card" content="summary_large_image"&gt;
+&lt;meta name="twitter:title" content="HTML — bases, structure &amp; SEO"&gt;
+&lt;meta name="twitter:description" content="Structure sémantique, OG/Twitter."&gt;
+&lt;meta name="twitter:image" content="https://exemple.com/assets/img/logo-og.png"&gt;
+&lt;meta name="twitter:image:alt" content="Logo ETUPEDIA"&gt;</code></pre>
+
+        <h3>Bonnes pratiques SEO supplémentaires</h3>
+        <ul>
+            <li>Un seul <code>h1</code> logique, titres hiérarchisés.</li>
+            <li>Images : poids optimisé, attributs <code>width</code>/<code>height</code>, <code>alt</code> descriptif.</li>
+            <li>Liens internes cohérents (maillage), balises <code>&lt;nav&gt;</code> et <code>aria-label</code> si besoin.</li>
+            <li>Pas de contenu dupliqué ; utiliser la balise canonical si nécessaire.</li>
+        </ul>
+
+        <h2>Sources</h2>
+        <ul>
+            <li><a href="https://html.spec.whatwg.org/" target="_blank" rel="noopener">WHATWG — HTML Living Standard</a></li>
+            <li><a href="https://developer.mozilla.org/fr/docs/Web/HTML" target="_blank" rel="noopener">MDN — HTML (FR)</a> • <a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noopener">EN</a></li>
+            <li><a href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide" target="_blank" rel="noopener">Google — SEO Starter Guide</a></li>
+            <li><a href="https://ogp.me/" target="_blank" rel="noopener">Open Graph Protocol</a></li>
+            <li><a href="https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards" target="_blank" rel="noopener">Twitter Cards — Overview</a></li>
+        </ul>
+
+        <article id="ai-section">
+            <p>Besoin d'aide pour comprendre?</p>
+            <button onclick="askAI()" id="ai-ask">Demander à une IA</button>
+        </article>
+    </main>
+
+    <aside id="table-of-contents">
+        <h3>Sommaire</h3>
+        <ul></ul>
+    </aside>
+</section>
+
+<footer>
+    <p>&copy; 2025 Etupedia - Tous droits réservés</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<!-- Scripts ETUPEDIA -->
+<script src="../../assets/js/ai-ask.js" defer></script>
+<script src="../../assets/js/pages-index.js" defer></script>
+<script src="../../assets/js/page-search.js" defer></script>
+<script src="../../assets/js/sidebar-generator.js" defer></script>
+<script src="../../assets/js/search-ui.js" defer></script>
+<script src="../../assets/js/landing-search.js" defer></script>
+<script src="../../assets/js/toc-generator.js" defer></script>
+</body>
+</html>

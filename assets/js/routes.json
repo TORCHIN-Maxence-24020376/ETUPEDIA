@@ -13,5 +13,60 @@
       "Transactions"
     ],
     "description": "Page ETUPEDIA parlant de PostgreSQL"
+  },
+  {
+    "title": "📄HTML",
+    "url": "pages/web/html.html",
+    "category": "Web",
+    "folder": "web",
+    "tags": [
+      "HTML",
+      "Structure",
+      "Sémantique",
+      "Formulaires",
+      "Accessibilité",
+      "SEO",
+      "Open Graph",
+      "Méta",
+      "Liens",
+      "Images"
+    ],
+    "description": "Structure d’un document, balises sémantiques, formulaires, métadonnées/SEO et bonnes pratiques d’accessibilité."
+  },
+  {
+    "title": "📄CSS",
+    "url": "pages/web/css.html",
+    "category": "Web",
+    "folder": "web",
+    "tags": [
+      "CSS",
+      "Cascade",
+      "Spécificité",
+      "Box Model",
+      "Flexbox",
+      "Grid",
+      "Responsive",
+      "Variables",
+      "Animations"
+    ],
+    "description": "Mise en forme moderne : cascade et spécificité, modèle de boîte, Flexbox, Grid, responsive, variables et animations."
+  },
+  {
+    "title": "📄JavaScript",
+    "url": "pages/web/javascript.html",
+    "category": "Web",
+    "folder": "web",
+    "tags": [
+      "JavaScript",
+      "DOM",
+      "Événements",
+      "Modules ES",
+      "Fetch",
+      "Promises",
+      "Async/Await",
+      "LocalStorage",
+      "Sécurité"
+    ],
+    "description": "JS moderne pour le web : manipulation du DOM, gestion d’événements, modules ES, fetch/JSON, async/await et sécurité côté client."
   }
 ]

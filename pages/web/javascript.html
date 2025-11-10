@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="JavaScript : introduction (sélection DOM, petites calculatrices, changements de couleurs) puis partie avancée (délégation, templates, fetch/AbortController, debounce/throttle, event loop, stockage, sécurité).">
+    <title>JavaScript - Etupedia</title>
+
+    <!-- Styles globaux -->
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/components/header.css">
+    <link rel="stylesheet" href="../../assets/css/components/themes-list.css">
+    <link rel="stylesheet" href="../../assets/css/components/table-of-contents.css">
+    <link rel="stylesheet" href="../../assets/css/components/footer.css">
+
+    <!-- Code highlight -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <!-- Métadonnées wiki -->
+    <meta name="wiki-tags" content="JavaScript,DOM,querySelector,getElementById,Événements,Templates,Fetch,AbortController,AsyncAwait,Debounce,Throttle,EventLoop,LocalStorage,Sécurité">
+    <meta name="wiki-category" content="Web">
+    <meta name="wiki-description" content="Intro pratique JS (sélecteurs, calculatrices, couleurs) puis concepts avancés (délégation, templates, fetch/Abort, perfs, sécurité).">
+
+    <!-- Canonical & Social -->
+    <link rel="canonical" href="https://etupedia.netlify.app/pages/web/javascript.html">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="ETUPEDIA">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="JavaScript — Intro & Avancé (avec démos)">
+    <meta property="og:description" content="De getElementById/querySelector aux patterns avancés, avec démos intégrées.">
+    <meta property="og:url" content="https://etupedia.netlify.app/pages/web/javascript.html">
+    <meta property="og:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta property="og:image:alt" content="Logo ETUPEDIA">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JavaScript — Intro & Avancé (avec démos)">
+    <meta name="twitter:description" content="Apprends en testant : DOM, événements, fetch/Abort, perfs, stockage, sécurité.">
+    <meta name="twitter:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta name="twitter:image:alt" content="Logo ETUPEDIA">
+
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.svg">
+
+    <!-- Petits styles de démo -->
+    <style>
+        .demo { border:1px dashed #334155; border-radius:10px; padding:12px; margin:.5rem 0 1rem; background:#0b1220; color:#e5e7eb; }
+        .demo h4 { margin:0 0 .5rem; font-size:1rem; opacity:.9; }
+        .stack { display:flex; flex-wrap:wrap; gap:.5rem; align-items:center }
+        .kbd { background:#111827; border:1px solid #374151; border-radius:6px; padding:6px 8px; color:#e5e7eb; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:.95em }
+        .btn { padding:6px 12px; border-radius:10px; background:#275afe; color:#fff; border:none; cursor:pointer; transition:transform .15s, box-shadow .15s }
+        .btn:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(39,90,254,.25)}
+        .btn.secondary { background:#64748b; color:#0b0b0f }
+        .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#111827; border:1px solid #374151; }
+        .panel { background:#0f172a; border:1px solid #1f2937; border-radius:10px; padding:.5rem .75rem; min-height:40px }
+        .list { padding-left:1rem }
+        .list li { display:flex; align-items:center; justify-content:space-between; gap:.5rem; border:1px solid #1f2937; padding:.35rem .5rem; border-radius:8px; }
+        .scrollbox { height:130px; overflow:auto; border:1px solid #1f2937; border-radius:8px; padding:.5rem; background:#0f172a }
+        .status-ok { color:#22c55e } .status-warn { color:#f59e0b } .status-err { color:#ef4444 }
+        .swatch { width:42px; height:42px; border-radius:8px; border:1px solid #374151; display:inline-block }
+        .card { border:1px solid #1f2937; border-radius:10px; padding:8px; background:#0f172a }
+        .code-inline { font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background:#0b0f19; border:1px solid #1f2937; padding:2px 6px; border-radius:6px }
+    </style>
+</head>
+<body>
+<header>
+    <a href="/" class="logo-link">
+        <img src="../../assets/img/logo.svg" alt="Etupedia Logo" class="logo">
+        <h1>Etupedia</h1>
+    </a>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" placeholder="Rechercher dans le wiki..." id="search-input">
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <button class="toc-toggle">📑 Sommaire</button>
+</header>
+
+<aside id="themes-list"></aside>
+
+<section id="main">
+    <main>
+        <h2>Introduction : DOM, sélecteurs, petites interactions</h2>
+        <p>
+            Objectif : manipuler le DOM proprement et comprendre la différence entre <code>getElementById</code> et <code>querySelector</code>,
+            puis réaliser de petites interactions (calculatrices, couleurs, toggles).
+        </p>
+
+        <nav class="see-also">
+            <p><strong>Voir aussi :</strong> <a href="./html.html">HTML</a> • <a href="./css.html">CSS</a></p>
+        </nav>
+
+        <h3>Sélectionner des éléments : getElementById vs querySelector</h3>
+        <pre><code class="language-javascript">const elA = document.getElementById('intro-title');   // par id (rapide, spécifique)
+const elB = document.querySelector('.card .pill');     // sélecteur CSS (très flexible)
+const many = document.querySelectorAll('ul.list li');  // NodeList (plusieurs éléments)</code></pre>
+        <div class="demo">
+            <h4>Démo</h4>
+            <div class="card">
+                <h4 id="intro-title" style="margin:0 0 .4rem">Titre de carte</h4>
+                <span class="pill">.card .pill</span>
+            </div>
+            <ul class="list" id="intro-list" style="margin-top:.5rem">
+                <li>Item 1</li><li>Item 2</li><li>Item 3</li>
+            </ul>
+            <div class="stack" style="margin-top:.5rem">
+                <button id="intro-read" class="btn">Lire via getElementById/querySelector</button>
+                <span id="intro-out" class="pill">…</span>
+            </div>
+        </div>
+
+        <h3>Calculatrice simple (addition/soustraction/multiplication/division)</h3>
+        <pre><code class="language-javascript">const a = parseFloat(document.getElementById('calc-a').value) || 0;
+const b = parseFloat(document.getElementById('calc-b').value) || 0;
+const op = document.querySelector('input[name="calc-op"]:checked').value;
+let res = NaN;
+switch (op) {
+  case 'add': res = a + b; break;
+  case 'sub': res = a - b; break;
+  case 'mul': res = a * b; break;
+  case 'div': res = b !== 0 ? a / b : NaN; break;
+}
+document.getElementById('calc-res').textContent = isNaN(res) ? 'Erreur' : res;</code></pre>
+        <div class="demo">
+            <h4>Démo</h4>
+            <div class="stack">
+                <input id="calc-a" type="number" class="kbd" value="2" placeholder="a">
+                <span>op:</span>
+                <label class="pill"><input type="radio" name="calc-op" value="add" checked> +</label>
+                <label class="pill"><input type="radio" name="calc-op" value="sub"> −</label>
+                <label class="pill"><input type="radio" name="calc-op" value="mul"> ×</label>
+                <label class="pill"><input type="radio" name="calc-op" value="div"> ÷</label>
+                <input id="calc-b" type="number" class="kbd" value="3" placeholder="b">
+                <button id="calc-run" class="btn">Calculer</button>
+                <span>= <strong id="calc-res">5</strong></span>
+            </div>
+        </div>
+
+        <h3>Mini convertisseur °C ⇄ °F</h3>
+        <pre><code class="language-javascript">
+  const $ = (s, r=document) => r.querySelector(s);
+
+  $('#toF')?.addEventListener('click', () => {
+    const c = parseFloat($('#celsius').value);
+    const f = isNaN(c) ? '—' : (c * 9/5 + 32).toFixed(2);
+    $('#outF').textContent = f;
+  });
+
+  $('#toC')?.addEventListener('click', () => {
+    const f = parseFloat($('#fahrenheit').value);
+    const c = isNaN(f) ? '—' : ((f - 32) * 5/9).toFixed(2);
+    $('#outC').textContent = c;
+  });
+
+  $('#celsius')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') $('#toF').click();
+  });
+  $('#fahrenheit')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') $('#toC').click();
+  });</code></pre>
+        <div class="demo">
+            <h4>Démo</h4>
+            <div class="stack">
+                <input id="celsius" class="kbd" type="number" placeholder="Celsius">
+                <button id="toF" class="btn">→ °F</button>
+                <span class="pill" id="outF">…</span>
+            </div>
+            <div class="stack" style="margin-top:.5rem">
+                <input id="fahrenheit" class="kbd" type="number" placeholder="Fahrenheit">
+                <button id="toC" class="btn">→ °C</button>
+                <span class="pill" id="outC">…</span>
+            </div>
+        </div>
+
+        <h3>Changer des couleurs (input color + querySelector)</h3>
+        <pre><code class="language-javascript">const color = document.getElementById('pick').value;
+document.querySelector('#swatch').style.backgroundColor = color;
+document.querySelector('.demo-color .pill').textContent = color;</code></pre>
+        <div class="demo demo-color">
+            <h4>Démo</h4>
+            <div class="stack">
+                <input id="pick" type="color" value="#275afe" class="kbd" style="padding:2px">
+                <button id="apply-color" class="btn">Appliquer</button>
+                <span class="pill" id="color-label">#275afe</span>
+                <span id="swatch" class="swatch" style="background:#275afe"></span>
+            </div>
+            <p class="panel" style="margin-top:.5rem">On cible avec <span class="code-inline">#swatch</span> (id) et <span class="code-inline">.demo-color .pill</span> (sélecteur CSS).</p>
+        </div>
+
+        <h2>Partie avancée : patterns, APIs, perfs, sécurité</h2>
+        <p>On passe à des usages plus “prod” : délégation d’événements, templates, requêtes annulables, debounce/throttle, event loop, stockage et sécurité.</p>
+
+        <h3>Délégation d’événements + Templates HTML</h3>
+        <pre><code class="language-html">&lt;template id="todo-tpl"&gt;
+  &lt;li class="todo"&gt;
+    &lt;span class="txt"&gt;&lt;/span&gt;
+    &lt;button class="btn secondary" data-action="remove"&gt;Supprimer&lt;/button&gt;
+  &lt;/li&gt;
+&lt;/template&gt;</code></pre>
+        <pre><code class="language-javascript">const tpl = document.getElementById('todo-tpl');
+function addTodo(text){
+  const node = tpl.content.cloneNode(true);
+  node.querySelector('.txt').textContent = text;
+  document.getElementById('todo-list').append(node);
+}
+document.addEventListener('click', (e) =&gt; {
+  const rm = e.target.closest('[data-action="remove"]');
+  if (!rm) return;
+  e.preventDefault();
+  rm.closest('li')?.remove();
+});</code></pre>
+        <div class="demo">
+            <h4>Démo</h4>
+            <template id="todo-tpl">
+                <li class="todo"><span class="txt"></span> <button class="btn secondary" data-action="remove">Supprimer</button></li>
+            </template>
+            <div class="stack">
+                <input id="todo-input" class="kbd" placeholder="Ma tâche…">
+                <button id="todo-add" class="btn">Ajouter</button>
+            </div>
+            <ul id="todo-list" class="list" style="margin-top:.5rem"></ul>
+            <p class="panel" style="margin-top:.5rem">La délégation écoute <span class="code-inline">document</span> et gère tous les boutons “Supprimer”, même ajoutés après coup.</p>
+        </div>
+
+        <h3>fetch simulé + AbortController (annuler une requête en cours)</h3>
+        <pre><code class="language-javascript">const ac = new AbortController();
+const p = fetch('/api/slow', { signal: ac.signal });
+// si l'utilisateur relance une recherche :
+ac.abort(); // lève AbortError</code></pre>
+        <div class="demo">
+            <h4>Démo</h4>
+            <div class="stack">
+                <input id="search-q" class="kbd" placeholder="recherche…">
+                <button id="search-run" class="btn">Chercher</button>
+                <button id="search-cancel" class="btn secondary">Annuler</button>
+                <span id="search-status" class="pill">inactif</span>
+            </div>
+            <div id="search-result" class="panel" style="margin-top:.5rem"></div>
+            <p class="panel" style="margin-top:.5rem">On simule une API lente avec <span class="code-inline">fakeFetch()</span> pour illustrer <span class="code-inline">AbortController</span>.</p>
+        </div>
+
+        <h3>Event loop (microtâches vs macrotâches)</h3>
+        <pre><code class="language-javascript">console.log('A');
+setTimeout(() =&gt; console.log('B (timer)'), 0);     // macrotâche
+Promise.resolve().then(() =&gt; console.log('C (micro)')); // microtâche
+console.log('D'); // ordre: A, D, C, B</code></pre>
+        <div class="demo">
+            <h4>Démo</h4>
+            <button id="loop-run" class="btn">Lancer</button>
+            <ol id="loop-out" class="panel" style="margin-top:.5rem"></ol>
+        </div>
+
+        <h3>Performance : debounce (saisie) & throttle (scroll)</h3>
+        <pre><code class="language-javascript">const debounce = (fn, d=300) =&gt; { let t; return (...a) =&gt; { clearTimeout(t); t=setTimeout(()=&gt;fn(...a), d); }; };
+const throttle = (fn, w=150) =&gt; { let p=0; return (...a) =&gt; { const n=Date.now(); if (n-p&gt;=w){ p=n; fn(...a); } }; };</code></pre>
+        <div class="demo">
+            <h4>Démo — recherche “au fil de la frappe” (debounce)</h4>
+            <div class="stack">
+                <input id="debounce-input" class="kbd" placeholder="Tape ici…">
+                <span id="debounce-raw" class="pill">frappes: 0</span>
+                <span id="debounce-fired" class="pill">requêtes: 0</span>
+            </div>
+            <div id="debounce-last" class="panel" style="margin-top:.5rem"></div>
+        </div>
+        <div class="demo">
+            <h4>Démo — scroll (throttle)</h4>
+            <div class="stack">
+                <span id="throttle-count" class="pill">callbacks: 0</span>
+            </div>
+            <div id="throttle-box" class="scrollbox" style="margin-top:.5rem">
+                <div style="height:700px; background:linear-gradient(#0f172a, #1f2937)"></div>
+            </div>
+        </div>
+
+        <h3>Stockage local (petites préférences non sensibles)</h3>
+        <pre><code class="language-javascript">localStorage.setItem('etu:theme','dark');
+const theme = localStorage.getItem('etu:theme');</code></pre>
+        <div class="demo">
+            <h4>Démo</h4>
+            <div class="stack">
+                <button id="theme-toggle" class="btn">Basculer thème</button>
+                <span>thème actuel: <strong id="theme-label">light</strong></span>
+            </div>
+            <p class="panel" style="margin-top:.5rem">On met à jour <span class="code-inline">document.documentElement.dataset.theme</span> et on persiste la valeur.</p>
+        </div>
+
+        <h3>Sécurité : textContent (safe) vs innerHTML (dangereux)</h3>
+        <pre><code class="language-javascript">safe.textContent = userInput; // affiche littéralement (sécurisé)
+risky.innerHTML = userInput;   // interprète le HTML (dangereux si non filtré)</code></pre>
+        <div class="demo">
+            <h4>Démo</h4>
+            <div class="stack">
+                <input id="sec-input" class="kbd" placeholder='Ex: &lt;b&gt;gras&lt;/b&gt; ou &lt;img onerror="alert(1)"&gt;'>
+                <button id="sec-safe" class="btn">textContent</button>
+                <button id="sec-risky" class="btn secondary">innerHTML</button>
+            </div>
+            <div class="panel" style="margin-top:.5rem">
+                <div>Affichage <strong>sûr</strong> : <span id="sec-safe-out" class="pill"></span></div>
+                <div style="margin-top:.5rem">Affichage <strong>interprété</strong> : <span id="sec-risky-out" class="pill"></span></div>
+            </div>
+        </div>
+
+        <h2>Sources</h2>
+        <ul>
+            <li><a href="https://developer.mozilla.org/fr/docs/Web/JavaScript" target="_blank" rel="noopener">MDN — JavaScript (FR)</a> • <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener">EN</a></li>
+            <li><a href="https://tc39.es/ecma262/" target="_blank" rel="noopener">ECMAScript Language Specification (TC39)</a></li>
+            <li><a href="https://dom.spec.whatwg.org/" target="_blank" rel="noopener">WHATWG — DOM</a> • <a href="https://fetch.spec.whatwg.org/" target="_blank" rel="noopener">WHATWG — Fetch</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/AbortController" target="_blank" rel="noopener">MDN — AbortController</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop" target="_blank" rel="noopener">MDN — Event Loop</a></li>
+            <li><a href="https://web.dev/learn/javascript/" target="_blank" rel="noopener">web.dev — Learn JavaScript</a></li>
+        </ul>
+
+        <article id="ai-section">
+            <p>Besoin d'aide pour comprendre?</p>
+            <button onclick="askAI()" id="ai-ask">Demander à une IA</button>
+        </article>
+    </main>
+
+    <aside id="table-of-contents">
+        <h3>Sommaire</h3>
+        <ul></ul>
+    </aside>
+</section>
+
+<footer>
+    <p>&copy; 2025 Etupedia - Tous droits réservés</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<!-- Scripts ETUPEDIA -->
+<script src="../../assets/js/ai-ask.js" defer></script>
+<script src="../../assets/js/pages-index.js" defer></script>
+<script src="../../assets/js/page-search.js" defer></script>
+<script src="../../assets/js/sidebar-generator.js" defer></script>
+<script src="../../assets/js/search-ui.js" defer></script>
+<script src="../../assets/js/landing-search.js" defer></script>
+<script src="../../assets/js/toc-generator.js" defer></script>
+
+<!-- Script des démos -->
+<script>
+    (() => {
+        const $ = (sel, root=document) => root.querySelector(sel);
+        const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
+
+        /* Intro — getElementById vs querySelector */
+        on($('#intro-read'), 'click', () => {
+            const elA = document.getElementById('intro-title');
+            const elB = document.querySelector('.card .pill');
+            const many = document.querySelectorAll('#intro-list li');
+            $('#intro-out').textContent =
+                `#intro-title = "${elA?.textContent}", .card .pill = "${elB?.textContent}", items = ${many.length}`;
+        });
+
+        /* Calculatrice */
+        on($('#calc-run'), 'click', () => {
+            const a = parseFloat($('#calc-a').value) || 0;
+            const b = parseFloat($('#calc-b').value) || 0;
+            const op = document.querySelector('input[name="calc-op"]:checked')?.value || 'add';
+            let res = NaN;
+            switch (op) {
+                case 'add': res = a + b; break;
+                case 'sub': res = a - b; break;
+                case 'mul': res = a * b; break;
+                case 'div': res = b !== 0 ? a / b : NaN; break;
+            }
+            $('#calc-res').textContent = isNaN(res) ? 'Erreur' : res;
+        });
+
+        /* Convertisseur C/F */
+        on($('#toF'), 'click', () => {
+            const c = parseFloat($('#celsius').value);
+            const f = isNaN(c) ? '—' : (c * 9/5 + 32).toFixed(2);
+            $('#outF').textContent = f;
+        });
+        on($('#toC'), 'click', () => {
+            const f = parseFloat($('#fahrenheit').value);
+            const c = isNaN(f) ? '—' : ((f - 32) * 5/9).toFixed(2);
+            $('#outC').textContent = c;
+        });
+
+        /* Couleurs */
+        on($('#apply-color'), 'click', () => {
+            const color = $('#pick').value;
+            $('#swatch').style.backgroundColor = color;
+            $('#color-label').textContent = color;
+        });
+
+        /* Avancé — Templates + délégation */
+        const tpl = $('#todo-tpl');
+        on($('#todo-add'), 'click', () => {
+            const text = ($('#todo-input').value || '').trim();
+            if (!text) return;
+            const node = tpl.content.cloneNode(true);
+            node.querySelector('.txt').textContent = text;
+            $('#todo-list').append(node);
+            $('#todo-input').value = '';
+        });
+        on(document, 'click', (e) => {
+            const rm = e.target.closest('[data-action="remove"]');
+            if (!rm) return;
+            e.preventDefault();
+            rm.closest('li')?.remove();
+        });
+
+        /* Avancé — fetch simulé + AbortController */
+        let ac = null;
+        const fakeFetch = (ms = 1200, { signal } = {}) => new Promise((resolve, reject) => {
+            const t = setTimeout(() => resolve({
+                ok: true,
+                async json(){ return { q: $('#search-q').value || '', items: ['alpha','beta','gamma'] }; }
+            }), ms);
+            if (signal) signal.addEventListener('abort', () => { clearTimeout(t); reject(new DOMException('Aborted','AbortError')); }, { once:true });
+        });
+        on($('#search-run'), 'click', async () => {
+            if (ac) ac.abort();
+            ac = new AbortController();
+            $('#search-status').textContent = 'chargement...';
+            $('#search-status').className = 'pill status-warn';
+            $('#search-result').textContent = '';
+            try {
+                const res = await fakeFetch(1200, { signal: ac.signal });
+                const data = await res.json();
+                $('#search-result').textContent = 'Résultat: ' + JSON.stringify(data);
+                $('#search-status').textContent = 'ok';
+                $('#search-status').className = 'pill status-ok';
+            } catch (e) {
+                if (e.name === 'AbortError') {
+                    $('#search-status').textContent = 'annulé';
+                    $('#search-status').className = 'pill';
+                } else {
+                    $('#search-status').textContent = 'erreur';
+                    $('#search-status').className = 'pill status-err';
+                    $('#search-result').textContent = e.message || String(e);
+                }
+            } finally { ac = null; }
+        });
+        on($('#search-cancel'), 'click', () => ac && ac.abort());
+
+        /* Avancé — event loop */
+        const push = (txt) => { const li = document.createElement('li'); li.textContent = txt; $('#loop-out').append(li); };
+        on($('#loop-run'), 'click', () => {
+            $('#loop-out').innerHTML = '';
+            push('A (sync)');
+            setTimeout(() => push('B (timer → macrotâche)'), 0);
+            Promise.resolve().then(() => push('C (Promise → microtâche)'));
+            push('D (sync)');
+        });
+
+        /* Avancé — debounce/throttle */
+        const debounce = (fn, d=300) => { let t; return (...a) => { clearTimeout(t); t=setTimeout(() => fn(...a), d); }; };
+        const throttle = (fn, w=150) => { let p=0; return (...a) => { const n=Date.now(); if (n-p>=w) { p=n; fn(...a); } }; };
+
+        let raw = 0, fired = 0;
+        const debounced = debounce((val) => {
+            fired++;
+            $('#debounce-fired').textContent = 'requêtes: ' + fired;
+            $('#debounce-last').textContent = 'Dernière valeur envoyée: "' + val + '"';
+        }, 400);
+        on($('#debounce-input'), 'input', (e) => {
+            raw++;
+            $('#debounce-raw').textContent = 'frappes: ' + raw;
+            debounced(e.target.value);
+        });
+
+        let thr = 0;
+        on($('#throttle-box'), 'scroll', throttle(() => {
+            thr++;
+            $('#throttle-count').textContent = 'callbacks: ' + thr;
+        }, 120));
+
+        /* Avancé — stockage local: thème */
+        const applyTheme = (t) => { document.documentElement.dataset.theme = t; $('#theme-label').textContent = t; };
+        applyTheme(localStorage.getItem('etu:theme') || 'light');
+        on($('#theme-toggle'), 'click', () => {
+            const next = ($('#theme-label').textContent === 'light') ? 'dark' : 'light';
+            localStorage.setItem('etu:theme', next);
+            applyTheme(next);
+        });
+
+        /* Avancé — sécurité (textContent vs innerHTML) */
+        on($('#sec-safe'), 'click', () => { $('#sec-safe-out').textContent = $('#sec-input').value; });
+        on($('#sec-risky'), 'click', () => {
+            // DÉMO : innerHTML interprète les balises (on neutralise grossièrement les on* pour éviter les surprises dans la démo)
+            $('#sec-risky-out').innerHTML = $('#sec-input').value.replace(/on\w+=/gi, 'data-attr=');
+        });
+    })();
+</script>
+</body>
+</html>

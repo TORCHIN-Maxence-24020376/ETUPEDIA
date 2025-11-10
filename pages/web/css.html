@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="CSS moderne : cascade/spécificité, box model, unités, Flexbox, Grid, responsive, variables, animations. Démonstrations inline."/>
+    <title>CSS - Etupedia</title>
+
+    <!-- styles globaux -->
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/components/header.css">
+    <link rel="stylesheet" href="../../assets/css/components/themes-list.css">
+    <link rel="stylesheet" href="../../assets/css/components/table-of-contents.css">
+    <link rel="stylesheet" href="../../assets/css/components/footer.css">
+
+    <!-- highlight -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <!-- wiki meta -->
+    <meta name="wiki-tags" content="CSS,Cascade,Spécificité,Box Model,Flexbox,Grid,Responsive,Variables,Animations,Accessibilité,Démos">
+    <meta name="wiki-category" content="Web">
+    <meta name="wiki-description" content="Démos CSS intégrées : box model, flex, grid, responsive, variables, focus, transitions.">
+
+    <!-- social -->
+    <link rel="canonical" href="https://etupedia.netlify.app/pages/web/css.html">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="ETUPEDIA">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="CSS — cascade, layout, responsive (avec démos)">
+    <meta property="og:description" content="Comprendre et expérimenter : modèle de boîte, flex, grid, variables, accessibilité.">
+    <meta property="og:url" content="https://etupedia.netlify.app/pages/web/css.html">
+    <meta property="og:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta property="og:image:alt" content="Logo ETUPEDIA">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CSS — cascade, layout, responsive (avec démos)">
+    <meta name="twitter:description" content="Cours ETUPEDIA avec démos inline.">
+    <meta name="twitter:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta name="twitter:image:alt" content="Logo ETUPEDIA">
+
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.svg">
+</head>
+<body>
+<header>
+    <a href="/" class="logo-link">
+        <img src="../../assets/img/logo.svg" alt="Etupedia Logo" class="logo">
+        <h1>Etupedia</h1>
+    </a>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" placeholder="Rechercher dans le wiki..." id="search-input">
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <button class="toc-toggle">📑 Sommaire</button>
+</header>
+
+<aside id="themes-list"></aside>
+
+<section id="main">
+    <main>
+        <h2>CSS : styliser, mettre en page, garder l’accessibilité</h2>
+        <p>Feuilles de style en cascade pour contrôler présentation, layout et interactions visuelles. Démos ci-dessous directement en HTML avec des styles inline pour <em>voir</em> l’effet des règles.</p>
+
+        <nav class="see-also">
+            <p><strong>Voir aussi :</strong> <a href="./html.html">HTML</a> • <a href="./javascript.html">JavaScript</a></p>
+        </nav>
+
+        <h3>Cascade, héritage & spécificité</h3>
+        <pre><code class="language-css">/* Le plus spécifique (ou le plus tardif) gagne */
+p { color:#666; }          /* élément */
+.article p { color:#333; } /* classe + élément */
+#main p { color:#111; }    /* id + élément (le plus fort ici) */</code></pre>
+
+        <h3>Modèle de boîte (box model)</h3>
+        <p><strong>Démo :</strong> deux boîtes identiques en largeur déclarée, mais l’une utilise <code>box-sizing:content-box</code> (valeur par défaut), l’autre <code>border-box</code>.</p>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-start">
+            <div style="width:160px; padding:12px; border:4px solid #999; background:#1f2937; color:#e5e7eb; box-sizing:content-box;">
+                content-box<br>déclaré 160px<br>(total réel plus grand)
+            </div>
+            <div style="width:160px; padding:12px; border:4px solid #999; background:#1f2937; color:#e5e7eb; box-sizing:border-box;">
+                border-box<br>déclaré 160px<br>(total = 160px)
+            </div>
+        </div>
+        <pre><code class="language-html">&lt;div style="width:160px; padding:12px; border:4px solid #999; box-sizing:content-box"&gt;...&lt;/div&gt;
+&lt;div style="width:160px; padding:12px; border:4px solid #999; box-sizing:border-box"&gt;...&lt;/div&gt;</code></pre>
+
+        <h3>Display : inline, block, inline-block</h3>
+        <p><strong>Démo :</strong> trois éléments avec des comportements différents.</p>
+        <div>
+            <span style="display:inline; padding:6px 10px; background:#334155; color:#fff;">inline</span>
+            <span style="display:block; padding:6px 10px; margin-top:6px; background:#475569; color:#fff;">block (prend toute la ligne)</span>
+            <span style="display:inline-block; padding:6px 10px; background:#64748b; color:#fff;">inline-block</span>
+        </div>
+
+        <h3>Flexbox</h3>
+        <p><strong>Démo :</strong> répartition sur l’axe principal + alignement vertical.</p>
+        <div style="display:flex; gap:10px; justify-content:space-between; align-items:center; padding:8px; border:1px dashed #4b5563;">
+            <div style="background:#1d4ed8; color:#fff; padding:8px 12px; border-radius:8px;">A</div>
+            <div style="background:#0ea5e9; color:#03121f; padding:8px 12px; border-radius:8px;">B</div>
+            <div style="background:#22c55e; color:#02220e; padding:8px 12px; border-radius:8px;">C</div>
+        </div>
+        <pre><code class="language-html">&lt;div style="display:flex; gap:10px; justify-content:space-between; align-items:center"&gt;
+  &lt;div&gt;A&lt;/div&gt; &lt;div&gt;B&lt;/div&gt; &lt;div&gt;C&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+        <h3>CSS Grid</h3>
+        <p><strong>Démo :</strong> grille 3 colonnes, responsive simple en media query.</p>
+        <style>
+            /* mini-scope local */
+            .grid-demo { display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; }
+            @media (max-width: 700px) { .grid-demo { grid-template-columns:1fr; } }
+            .grid-demo .card { padding:10px; border:1px solid #3333; border-radius:10px; background:#0b1220; color:#e5e7eb; }
+        </style>
+        <div class="grid-demo" style="margin:6px 0 0">
+            <div class="card">1</div><div class="card">2</div><div class="card">3</div>
+        </div>
+        <pre><code class="language-css">.grid-demo { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+@media (max-width:700px){ .grid-demo { grid-template-columns:1fr; } }</code></pre>
+
+        <h3>Positionnement (relative/absolute)</h3>
+        <p><strong>Démo :</strong> un badge positionné dans son conteneur.</p>
+        <div style="position:relative; padding:18px; border:1px solid #3333; border-radius:10px; width:260px;">
+            Conteneur
+            <span style="position:absolute; top:6px; right:6px; background:#ef4444; color:#fff; padding:3px 8px; border-radius:999px; font-size:.8rem;">Nouveau</span>
+        </div>
+
+        <h3>Overflow</h3>
+        <div style="height:70px; width:260px; overflow:auto; border:1px solid #3333; padding:8px; border-radius:8px;">
+            Long contenu Long contenu Long contenu Long contenu Long contenu Long contenu Long contenu Long contenu Long contenu Long contenu…
+        </div>
+
+        <h3>Transitions & états de focus</h3>
+        <style>
+            .demo-btn { padding:8px 14px; border-radius:10px; background:#275afe; color:#fff; border:none; transition:transform .15s, box-shadow .15s; }
+            .demo-btn:hover { transform: translateY(-2px); box-shadow:0 6px 18px rgba(39,90,254,.25); }
+            .demo-btn:focus-visible { outline:2px solid #fff; outline-offset:2px; }
+        </style>
+        <button class="demo-btn" type="button">Bouton animé</button>
+        <pre><code class="language-css">.demo-btn{ transition:transform .15s, box-shadow .15s; }
+.demo-btn:hover{ transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.2); }
+.demo-btn:focus-visible{ outline:2px solid; outline-offset:2px; }</code></pre>
+
+        <h3>Variables CSS (thématisation)</h3>
+        <style>
+            .var-demo { --brand:#f59e0b; background:var(--brand); color:#0b0b0f; padding:8px 12px; border-radius:10px; display:inline-block; }
+        </style>
+        <span class="var-demo">Bouton (var(--brand))</span>
+        <pre><code class="language-css">.var-demo { --brand:#f59e0b; background:var(--brand); }</code></pre>
+
+        <h3>Préférences utilisateur</h3>
+        <pre><code class="language-css">@media (prefers-reduced-motion: reduce) {
+  * { animation:none !important; transition:none !important; }
+}
+@media (prefers-color-scheme: dark) {
+  body { background:#0b0b0f; color:#eaeaea; }
+}</code></pre>
+
+        <h2>Sources</h2>
+        <ul>
+            <li><a href="https://www.w3.org/TR/CSS/" target="_blank" rel="noopener">W3C — Spécifications CSS</a></li>
+            <li><a href="https://developer.mozilla.org/fr/docs/Web/CSS" target="_blank" rel="noopener">MDN — CSS (FR)</a> • <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" rel="noopener">EN</a></li>
+            <li><a href="https://web.dev/learn/css/" target="_blank" rel="noopener">web.dev — Learn CSS</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_grid_layout" target="_blank" rel="noopener">MDN — CSS Grid</a> • <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout" target="_blank" rel="noopener">MDN — Flexbox</a></li>
+        </ul>
+
+        <article id="ai-section">
+            <p>Besoin d'aide pour comprendre?</p>
+            <button onclick="askAI()" id="ai-ask">Demander à une IA</button>
+        </article>
+    </main>
+
+    <aside id="table-of-contents">
+        <h3>Sommaire</h3>
+        <ul></ul>
+    </aside>
+</section>
+
+<footer>
+    <p>&copy; 2025 Etupedia - Tous droits réservés</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<script src="../../assets/js/ai-ask.js" defer></script>
+<script src="../../assets/js/pages-index.js" defer></script>
+<script src="../../assets/js/page-search.js" defer></script>
+<script src="../../assets/js/sidebar-generator.js" defer></script>
+<script src="../../assets/js/search-ui.js" defer></script>
+<script src="../../assets/js/landing-search.js" defer></script>
+<script src="../../assets/js/toc-generator.js" defer></script>
+</body>
+</html>
