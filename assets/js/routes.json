@@ -70,7 +70,7 @@
     "description": "JS moderne pour le web : manipulation du DOM, gestion d’événements, modules ES, fetch/JSON, async/await et sécurité côté client."
   },
   {
-    "title": "📄Validité & écologie",
+    "title": "🌿Validité & écologie",
     "url": "pages/web/validite-ecologie.html",
     "category": "Web",
     "folder": "web",
@@ -89,6 +89,33 @@
       "Énergie"
     ],
     "description": "Valider HTML/CSS (W3C) et éco-concevoir un site : checklists, outils, performances et bonnes pratiques pour réduire l’empreinte."
+  },
+  {
+    "title": "👩‍⚖️Droit des contrats",
+    "url": "pages/droit/droit-des-contrats.html",
+    "category": "Droit",
+    "folder": "droit",
+    "tags": [
+      "Contrats",
+      "Avant-contrats",
+      "Consentement",
+      "Erreur",
+      "Dol",
+      "Violence",
+      "Capacité",
+      "Contenu licite",
+      "Nullité",
+      "Preuve électronique",
+      "Signature électronique",
+      "E-commerce",
+      "CGV",
+      "Rétractation",
+      "Prestations informatiques",
+      "RGPD",
+      "SLA",
+      "Réversibilité",
+      "Indexation"
+    ],
+    "description": "Synthèse pratique : formation du contrat, vices du consentement, capacité, contenu licite, nullité, preuve/signature électroniques, e-commerce (double-clic, archivage, rétractation), contrats informatiques (SLA, réversibilité, confidentialité)."
   }
-
 ]

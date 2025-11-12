@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Synthèse pratique du droit des contrats : formation, liberté contractuelle, consentement et vices, capacité, contenu licite, nullité, preuve et signature électroniques, e-commerce, rétractation, contrats informatiques (SLA, réversibilité, confidentialité).">
+    <title>Droit des contrats - Etupedia</title>
+
+    <!-- Styles globaux -->
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/components/header.css">
+    <link rel="stylesheet" href="../../assets/css/components/themes-list.css">
+    <link rel="stylesheet" href="../../assets/css/components/table-of-contents.css">
+    <link rel="stylesheet" href="../../assets/css/components/footer.css">
+
+    <!-- Code highlight (si besoin) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <!-- Canonical & Social -->
+    <link rel="canonical" href="https://etupedia.netlify.app/pages/web/droit-des-contrats.html">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="ETUPEDIA">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Droit des contrats — synthèse utile pour projets numériques">
+    <meta property="og:description" content="Formation, consentement, nullité, preuve électronique, e-commerce, rétractation, contrats informatiques.">
+    <meta property="og:url" content="https://etupedia.netlify.app/pages/web/droit-des-contrats.html">
+    <meta property="og:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta property="og:image:alt" content="Logo ETUPEDIA">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Droit des contrats — synthèse utile pour projets numériques">
+    <meta name="twitter:description" content="De la phase précontractuelle aux clauses clés des prestations informatiques.">
+    <meta name="twitter:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta name="twitter:image:alt" content="Logo ETUPEDIA">
+
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.svg">
+</head>
+<body>
+<header>
+    <a href="/" class="logo-link">
+        <img src="../../assets/img/logo.svg" alt="Etupedia Logo" class="logo">
+        <h1>Etupedia</h1>
+    </a>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" placeholder="Rechercher dans le wiki..." id="search-input">
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <button class="toc-toggle">📑 Sommaire</button>
+</header>
+
+<aside id="themes-list"></aside>
+
+<section id="main">
+    <main>
+        <h2>Droit des contrats : les fondamentaux pour les projets numériques</h2>
+        <p>
+            Un contrat encadre la relation entre des parties (professionnels ou consommateurs) et fixe des obligations réciproques.
+            Pour être valable, il doit être valablement formé (consentement, capacité, contenu licite). Dans le numérique s’ajoutent
+            des exigences spécifiques (preuve et signature électroniques, information du consommateur, droit de rétractation, clauses
+            propres aux prestations informatiques).
+        </p>
+
+        <h3>Phase précontractuelle : négocier proprement</h3>
+        <p>
+            Avant de conclure, les parties discutent (pourparlers). Cette phase est libre (chacun peut poursuivre ou rompre), mais doit
+            respecter la bonne foi : pas de manœuvres dilatoires ou de ruptures brutales et malveillantes d’une négociation avancée.
+            En cas de rupture fautive, des dommages-intérêts peuvent être alloués.
+        </p>
+
+        <h3>Avant-contrats : sécuriser l’intention</h3>
+        <ul>
+            <li><strong>Pacte de préférence</strong> : l’offrant s’engage à proposer prioritairement au bénéficiaire de conclure le contrat envisagé, s’il décide de le passer. Le bénéficiaire n’est pas obligé d’acheter ; l’offrant qui passe outre engage sa responsabilité.</li>
+            <li><strong>Promesse unilatérale</strong> : le promettant s’engage à conclure le contrat si le bénéficiaire lève l’option dans le délai prévu. Pour compenser le déséquilibre (engagement d’un seul côté), une indemnité d’immobilisation peut être prévue.</li>
+            <li><strong>Promesse synallagmatique</strong> : les deux parties s’obligent dès maintenant, la conclusion définitive dépendant d’une condition (administrative, prêt, acte authentique…). À défaut de réalisation, l’impossibilité objective libère les parties.</li>
+        </ul>
+
+        <h3>Liberté contractuelle & devoir d’information</h3>
+        <p>
+            En principe, chacun est libre de contracter (ou non), de choisir son partenaire, le contenu et la forme, dans les limites de la loi.
+            Pendant les échanges, toute information déterminante pour l’autre partie doit être fournie loyalement (devoir d’information de bonne foi).
+        </p>
+
+        <h3>Consentement : offre, acceptation et vices</h3>
+        <p>
+            Le consentement naît de la rencontre d’une offre précise et d’une acceptation sans réserve. Il doit être libre et éclairé
+            (sans vice) ; trois grands vices peuvent anéantir le contrat :
+        </p>
+        <ul>
+            <li><strong>Erreur</strong> : représentation inexacte d’un élément déterminant (sur la chose, ses qualités essentielles, éventuellement la personne selon le type de contrat).</li>
+            <li><strong>Dol</strong> : erreur provoquée par des manœuvres, mensonges ou réticences intentionnelles de l’autre partie.</li>
+            <li><strong>Violence</strong> : contrainte physique ou morale, émanant de la partie ou d’un tiers, de nature à inspirer une crainte.</li>
+        </ul>
+
+        <h3>Capacité & représentation</h3>
+        <p>
+            Pour contracter, il faut la capacité juridique (mineurs protégés, majeurs sous régime de protection : contrats fragiles). Les personnes morales
+            agissent par leurs représentants (mandat : le mandataire agit au nom et pour le compte du mandant, les effets se produisent chez le représenté).
+        </p>
+
+        <h3>Contenu licite et certain</h3>
+        <p>
+            Les stipulations et le but poursuivi doivent être licites. La prestation promise doit exister (ou être future mais possible) et être déterminée
+            ou déterminable sans nouvel accord des parties.
+        </p>
+
+        <h3>Sanctions : nullité relative / absolue (rappel utile)</h3>
+        <table>
+            <thead>
+            <tr><th>Type</th><th>Intérêt protégé</th><th>Qui peut agir ?</th><th>Délai (indicatif)</th><th>Effet</th></tr>
+            </thead>
+            <tbody>
+            <tr><td>Nullité relative</td><td>Intérêt privé (ex : vice du consentement, incapacité)</td><td>La « victime » (ou représentant)</td><td>En principe 5 ans (points de départ spécifiques : fin de la violence, majorité…)</td><td>Anéantissement rétroactif du contrat</td></tr>
+            <tr><td>Nullité absolue</td><td>Ordre public / intérêt général (ex : but illicite)</td><td>Toute personne ayant intérêt à agir</td><td>Prescription plus longue selon les cas</td><td>Anéantissement rétroactif du contrat</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Preuve et signature électroniques</h2>
+        <p>
+            L’écrit électronique a, sous conditions, la même valeur probante que le papier : identification de l’auteur et garanties d’intégrité
+            du document. Pour sécuriser la signature, on recourt à une signature électronique qualifiée délivrée par un prestataire de confiance
+            (présomption de fiabilité en cas de litige).
+        </p>
+
+        <h2>Contrats conclus en ligne avec des consommateurs</h2>
+        <h3>Information préalable & données personnelles</h3>
+        <ul>
+            <li>Informer de manière claire (identité du pro, caractéristiques essentielles, prix total, moyens de paiement, restrictions de livraison, etc.).</li>
+            <li>Respecter la réglementation « données personnelles » (transparence, consentement lorsque requis – ex. newsletters, cookies –, droits d’accès/suppression, sécurité).</li>
+        </ul>
+
+        <h3>Acceptation, double-validation et accusé de réception</h3>
+        <ul>
+            <li><strong>CGV</strong> : l’adhésion se matérialise en pratique par un clic (case à cocher + bouton « je commande »).</li>
+            <li><strong>Double-clic</strong> : le processus doit permettre de vérifier le détail de la commande, le prix total et de corriger les erreurs avant confirmation.</li>
+            <li><strong>Accusé de réception</strong> : confirmation sans délai par voie électronique (page + email).</li>
+            <li><strong>Archivage</strong> : au-delà d’un certain montant, le professionnel conserve le contrat et communique les modalités d’accès à l’acheteur.</li>
+        </ul>
+
+        <h3>Droit de rétractation</h3>
+        <p>
+            Le consommateur peut, dans de nombreux cas, se rétracter dans un délai légal (retour et remboursement sans pénalité, seuls les frais
+            de renvoi étant, en principe, à sa charge si cela a été clairement indiqué). Le professionnel doit informer des modalités d’exercice.
+        </p>
+
+        <h2>Contrats de prestations informatiques (B2B)</h2>
+        <ul>
+            <li><strong>Confidentialité</strong> : ne pas divulguer les informations et documents obtenus pendant l’exécution.</li>
+            <li><strong>Réversibilité</strong> : garantir la récupération des données et la continuité d’activité en fin de contrat (modalités, délais, formats, assistance).</li>
+            <li><strong>SLA / disponibilité</strong> : niveaux de service mesurables, pénalités, procédure d’escalade.</li>
+            <li><strong>Indexation</strong> : clause d’indexation (souvent index sectoriel) pour faire évoluer le prix dans le temps, dans les limites légales.</li>
+            <li><strong>Responsabilité</strong> : périmètre, exclusions (ex. contenus illicites déposés par le client), plafonds d’indemnisation, assurances.</li>
+            <li><strong>Propriété intellectuelle</strong> : droits cédés/licenciés, livrables, dépendances, composantes libres et leurs licences.</li>
+            <li><strong>Sécurité / RGPD</strong> : mesures techniques/organisationnelles, sous-traitance, notifications d’incidents, localisation des données.</li>
+        </ul>
+
+        <h2>Checklists pratiques</h2>
+        <h3>Avant de signer</h3>
+        <ul>
+            <li>Objectif, livrables, planning, responsabilités clairement définis.</li>
+            <li>Confidentialité, propriété intellectuelle, réversibilité, SLA, pénalités : textes précis.</li>
+            <li>Prix, indexation, modalités de facturation et de paiement : sans ambiguïté.</li>
+            <li>RGPD : rôles (responsable/sous-traitant), registre des traitements, DPA, mesures de sécurité.</li>
+        </ul>
+
+        <h3>Site e-commerce</h3>
+        <ul>
+            <li>Parcours « double-clic », accusé de réception, CGV lisibles, moyens de paiement affichés.</li>
+            <li>Droit de rétractation : délai, formulaire, exclusions éventuelles prévues par la loi.</li>
+            <li>Cookies et prospection : consentement valable, désabonnement facile, mentions d’information conformes.</li>
+            <li>Archivage et accès du client à son contrat au-delà du seuil requis.</li>
+        </ul>
+
+        <h2>Sources</h2>
+        <ul>
+            <li><a href="https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006070721/" target="_blank" rel="noopener">Code civil — Légifrance</a> (formation du contrat, consentement, contenu licite, preuve & signature électroniques)</li>
+            <li><a href="https://www.legifrance.gouv.fr/codes/id/LEGITEXT000006069565/" target="_blank" rel="noopener">Code de la consommation — Légifrance</a> (information précontractuelle, double-validation, archivage, droit de rétractation)</li>
+            <li><a href="https://www.cnil.fr/fr" target="_blank" rel="noopener">CNIL</a> (données personnelles, cookies, prospection — RGPD)</li>
+            <li><a href="https://eidas.ec.europa.eu/" target="_blank" rel="noopener">eIDAS</a> (cadre européen des services de confiance, signature électronique)</li>
+        </ul>
+
+        <article id="ai-section">
+            <p>Besoin d'aide pour comprendre?</p>
+            <button onclick="askAI()" id="ai-ask">Demander à une IA</button>
+        </article>
+    </main>
+
+    <aside id="table-of-contents">
+        <h3>Sommaire</h3>
+        <ul>
+            <!-- Généré automatiquement par JavaScript -->
+        </ul>
+    </aside>
+</section>
+
+<footer>
+    <p>&copy; 2025 Etupedia - Tous droits réservés</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<!-- Scripts ETUPEDIA -->
+<script src="../../assets/js/ai-ask.js" defer></script>
+<script src="../../assets/js/pages-index.js" defer></script>
+<script src="../../assets/js/page-search.js" defer></script>
+<script src="../../assets/js/sidebar-generator.js" defer></script>
+<script src="../../assets/js/search-ui.js" defer></script>
+<script src="../../assets/js/landing-search.js" defer></script>
+<script src="../../assets/js/toc-generator.js" defer></script>
+</body>
+</html>
