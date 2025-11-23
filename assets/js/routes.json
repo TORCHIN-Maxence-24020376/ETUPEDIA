@@ -117,5 +117,58 @@
       "Indexation"
     ],
     "description": "Synthèse pratique : formation du contrat, vices du consentement, capacité, contenu licite, nullité, preuve/signature électroniques, e-commerce (double-clic, archivage, rétractation), contrats informatiques (SLA, réversibilité, confidentialité)."
+  },
+  {
+    "title": "📄UML — Analyse & conception",
+    "url": "pages/java/uml-analyse-conception.html",
+    "category": "UML & Modélisation",
+    "folder": "java",
+    "tags": [
+      "UML",
+      "Use Case",
+      "Diagrammes de classes",
+      "Diagrammes de séquence",
+      "Agrégation",
+      "Composition",
+      "Héritage",
+      "Relations UML"
+    ],
+    "description": "Cas d’utilisation, diagrammes de classes (associations, agrégation, composition, héritage) et diagrammes de séquence (messages, fragments combinés) pour analyser et concevoir un système."
+  },
+  {
+    "title": "📄Structures de données en Java",
+    "url": "pages/java/structures-donnees-java.html",
+    "category": "Java & Algorithmique",
+    "folder": "java",
+    "tags": [
+      "Java",
+      "Listes",
+      "Piles",
+      "Files",
+      "Arbres",
+      "Collections",
+      "Maps",
+      "HashMap",
+      "TreeMap"
+    ],
+    "description": "Présentation des principales structures de données vues en Java : listes (ArrayList, LinkedList), piles, files, arbres, et Collections & Maps (List, Set, Map)."
+  },
+  {
+    "title": "📄Algorithmes de tri en Java",
+    "url": "pages/java/algorithmes-tri-java.html",
+    "category": "Algorithmique",
+    "folder": "java",
+    "tags": [
+      "Algorithmes de tri",
+      "Tri par sélection",
+      "Tri par insertion",
+      "Tri à bulles",
+      "Tri fusion",
+      "Quicksort",
+      "Complexité",
+      "Big-O",
+      "Java"
+    ],
+    "description": "Synthèse des algorithmes de tri étudés : tris simples (sélection, insertion, bulles) et tris en O(n log n) (tri fusion, tri rapide), avec complexités et usages en Java."
   }
 ]

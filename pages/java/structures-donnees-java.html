@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Structures de données en Java : listes, piles, files, arbres, et Collections & Maps (List, Set, Map, HashMap, TreeMap…).">
+    <title>Structures de données en Java - Etupedia</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/components/header.css">
+    <link rel="stylesheet" href="../../assets/css/components/themes-list.css">
+    <link rel="stylesheet" href="../../assets/css/components/table-of-contents.css">
+    <link rel="stylesheet" href="../../assets/css/components/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <meta name="wiki-tags" content="Java,Listes,Piles,Files,Arbres,Collections,Maps,HashMap,TreeMap,LinkedList,ArrayList,Set">
+    <meta name="wiki-category" content="Java & Algorithmique">
+    <meta name="wiki-description" content="Résumé des principales structures de données vues en Java : listes, piles, files, arbres, Collections & Maps.">
+
+    <link rel="canonical" href="https://etupedia.netlify.app/pages/web/structures-donnees-java.html">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="ETUPEDIA">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Structures de données en Java">
+    <meta property="og:description" content="Listes, piles, arbres, Collections & Maps dans la pratique Java.">
+    <meta property="og:url" content="https://etupedia.netlify.app/pages/web/structures-donnees-java.html">
+    <meta property="og:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta property="og:image:alt" content="Logo ETUPEDIA">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Structures de données en Java">
+    <meta name="twitter:description" content="De la liste chaînée aux HashMap et TreeMap.">
+    <meta name="twitter:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta name="twitter:image:alt" content="Logo ETUPEDIA">
+
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.svg">
+</head>
+<body>
+<header>
+    <a href="/" class="logo-link">
+        <img src="../../assets/img/logo.svg" alt="Etupedia Logo" class="logo">
+        <h1>Etupedia</h1>
+    </a>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" placeholder="Rechercher dans le wiki..." id="search-input">
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <button class="toc-toggle">📑 Sommaire</button>
+</header>
+
+<aside id="themes-list"></aside>
+
+<section id="main">
+    <main>
+        <h2>Structures de données en Java</h2>
+        <p>
+            Les structures de données permettent de organiser et stocker l’information efficacement. En Java, on combine souvent
+            la théorie (listes, piles, arbres…) avec le <strong>Java Collections Framework</strong> (List, Set, Map, etc.).
+        </p>
+
+        <nav class="see-also">
+            <p><strong>Voir aussi :</strong>
+                <a href="./uml-analyse-conception.html">UML — Analyse & conception</a> •
+                <a href="./algorithmes-tri-java.html">Algorithmes de tri en Java</a>
+            </p>
+        </nav>
+
+        <h3>Listes</h3>
+        <p>
+            Une <strong>liste</strong> est une suite ordonnée d’éléments, avec une position pour chacun. On peut insérer, supprimer,
+            parcourir et chercher des éléments.
+        </p>
+
+        <h4>Listes chaînées vs tableaux dynamiques</h4>
+        <ul>
+            <li><strong>Tableau dynamique</strong> (type <code>ArrayList&lt;T&gt;</code>) : accès par index en O(1), mais insertion/suppression
+                au milieu coûteuse (décalage des éléments).</li>
+            <li><strong>Liste chaînée</strong> (<code>LinkedList&lt;T&gt;</code>) : insertion/suppression en O(1) si on a déjà la référence
+                au nœud, mais accès par index en O(n).</li>
+        </ul>
+
+        <pre><code class="language-java">List&lt;String&gt; noms = new ArrayList&lt;&gt;();
+noms.add("Alice");
+noms.add("Bob");
+noms.remove("Alice");</code></pre>
+
+        <h3>Piles et files</h3>
+        <p>
+            Ces structures contrôlent l’ordre de sortie des données :
+        </p>
+        <ul>
+            <li><strong>Pile (stack)</strong> : LIFO (Last In, First Out) — on empile et dépile sur le même côté (ex : historique de navigation).</li>
+            <li><strong>File (queue)</strong> : FIFO (First In, First Out) — le premier arrivé est le premier servi (ex : file d’impression).</li>
+        </ul>
+
+        <pre><code class="language-java">Deque&lt;Integer&gt; pile = new ArrayDeque&lt;&gt;();
+pile.push(1);    // empiler
+pile.push(2);
+int x = pile.pop(); // dépiler (2)</code></pre>
+
+        <h3>Arbres</h3>
+        <p>
+            Un <strong>arbre</strong> est une structure hiérarchique : un nœud racine, des nœuds enfants, etc. Un <strong>arbre binaire</strong>
+            limite chaque nœud à au plus deux enfants. Les <strong>arbres de recherche binaires</strong> organisent les valeurs de façon à
+            permettre une recherche plus efficace (en moyenne O(log n) si l’arbre est équilibré).
+        </p>
+        <ul>
+            <li><strong>Parcours</strong> : préfixe (prefix), infixe (infix), postfix (postfix) — souvent implémentés récursivement.</li>
+            <li><strong>Utilisations</strong> : index (arbres de recherche, arbres équilibrés), hiérarchies (menus, dossiers), interprétation d’expressions, etc.</li>
+        </ul>
+
+        <h3>Collections & interface Collection</h3>
+        <p>
+            Le <strong>Java Collections Framework</strong> fournit des interfaces génériques (Collection, List, Set, Queue, Map) et
+            des implémentations (ArrayList, LinkedList, HashSet, HashMap, etc.).
+        </p>
+
+        <ul>
+            <li><strong>Collection&lt;E&gt;</strong> : interface racine (ajout, suppression, taille, itération…).</li>
+            <li><strong>List&lt;E&gt;</strong> : liste ordonnée indexée, peut contenir des doublons (ArrayList, LinkedList…).</li>
+            <li><strong>Set&lt;E&gt;</strong> : ensemble sans doublons (HashSet, LinkedHashSet, TreeSet…).</li>
+            <li><strong>Queue&lt;E&gt;</strong> : file ou file de priorité (Queue, Deque…).</li>
+        </ul>
+
+        <pre><code class="language-java">Set&lt;String&gt; emails = new HashSet&lt;&gt;();
+emails.add("a@exemple.fr");
+emails.add("b@exemple.fr");
+emails.add("a@exemple.fr"); // ignoré : pas de doublon</code></pre>
+
+        <h3>Maps : associer clés et valeurs</h3>
+        <p>
+            Une <strong>Map&lt;K,V&gt;</strong> associe une clé à une valeur (dictionnaire, table de hachage…). Les implémentations se distinguent
+            par les garanties d’ordre et les performances.
+        </p>
+        <ul>
+            <li><strong>HashMap&lt;K,V&gt;</strong> : très rapide en moyenne, pas d’ordre garanti, basé sur <code>hashCode()</code> / <code>equals()</code>.</li>
+            <li><strong>LinkedHashMap&lt;K,V&gt;</strong> : conserve l’ordre d’insertion.</li>
+            <li><strong>TreeMap&lt;K,V&gt;</strong> : trié selon l’ordre naturel de la clé ou un comparateur (implémentation par arbre).</li>
+        </ul>
+
+        <pre><code class="language-java">Map&lt;String, Integer&gt; scores = new HashMap&lt;&gt;();
+scores.put("Alice", 12);
+scores.put("Bob", 18);
+int scoreBob = scores.get("Bob"); // 18</code></pre>
+
+        <h3>Bien choisir sa structure</h3>
+        <ul>
+            <li><strong>Beaucoup d’accès par index</strong> → <code>ArrayList</code>.</li>
+            <li><strong>Beaucoup d’insertion/suppression au milieu</strong> → <code>LinkedList</code> ou structure chaînée.</li>
+            <li><strong>Besoin d’unicité</strong> → <code>Set</code>.</li>
+            <li><strong>Association clé → valeur</strong> → <code>Map</code> (HashMap par défaut, TreeMap si ordre trié requis).</li>
+        </ul>
+
+        <h2>Sources</h2>
+        <ul>
+            <li><a href="https://dev.java/learn/api/collections-framework/" target="_blank" rel="noopener">dev.java — The Collections Framework</a></li>
+            <li><a href="https://www.digitalocean.com/community/tutorials/collections-in-java-tutorial" target="_blank" rel="noopener">DigitalOcean — Collections in Java</a></li>
+            <li><a href="https://www.w3schools.com/java/java_collections.asp" target="_blank" rel="noopener">W3Schools — Java Collections</a></li>
+            <li><a href="https://www.protechtraining.com/bookshelf/java_fundamentals_tutorial/generics_collections" target="_blank" rel="noopener">ProTech — Java Generics & Collections</a></li>
+            <li><a href="https://medium.com/%40AlexanderObregon/working-with-java-collections-tips-and-techniques-e1ee28e179ab" target="_blank" rel="noopener">Medium — Working with Java Collections</a></li>
+        </ul>
+
+        <article id="ai-section">
+            <p>Besoin d'aide pour comprendre?</p>
+            <button onclick="askAI()" id="ai-ask">Demander à une IA</button>
+        </article>
+    </main>
+
+    <aside id="table-of-contents">
+        <h3>Sommaire</h3>
+        <ul></ul>
+    </aside>
+</section>
+
+<footer>
+    <p>&copy; 2025 Etupedia - Tous droits réservés</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<script src="../../assets/js/ai-ask.js" defer></script>
+<script src="../../assets/js/pages-index.js" defer></script>
+<script src="../../assets/js/page-search.js" defer></script>
+<script src="../../assets/js/sidebar-generator.js" defer></script>
+<script src="../../assets/js/search-ui.js" defer></script>
+<script src="../../assets/js/landing-search.js" defer></script>
+<script src="../../assets/js/toc-generator.js" defer></script>
+</body>
+</html>

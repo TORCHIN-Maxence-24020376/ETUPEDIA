@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Algorithmes de tri : sélection, insertion, bulle, tri fusion, tri rapide. Complexités, stabilité et choix de l’algorithme en Java.">
+    <title>Algorithmes de tri en Java - Etupedia</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/components/header.css">
+    <link rel="stylesheet" href="../../assets/css/components/themes-list.css">
+    <link rel="stylesheet" href="../../assets/css/components/table-of-contents.css">
+    <link rel="stylesheet" href="../../assets/css/components/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <meta name="wiki-tags" content="Algorithmes de tri,Tri par sélection,Tri par insertion,Tri à bulles,Tri fusion,Quicksort,Complexité,Big-O,Java">
+    <meta name="wiki-category" content="Algorithmique">
+    <meta name="wiki-description" content="Résumé des principaux algorithmes de tri étudiés : fonctionnement, complexités, usage en Java.">
+
+    <link rel="canonical" href="https://etupedia.netlify.app/pages/web/algorithmes-tri-java.html">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="ETUPEDIA">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Algorithmes de tri en Java">
+    <meta property="og:description" content="Des tris simples aux algorithmes en O(n log n) : tri fusion, tri rapide.">
+    <meta property="og:url" content="https://etupedia.netlify.app/pages/web/algorithmes-tri-java.html">
+    <meta property="og:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta property="og:image:alt" content="Logo ETUPEDIA">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Algorithmes de tri en Java">
+    <meta name="twitter:description" content="Comprendre les forces/faiblesses des différents tris.">
+    <meta name="twitter:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta name="twitter:image:alt" content="Logo ETUPEDIA">
+
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.svg">
+</head>
+<body>
+<header>
+    <a href="/" class="logo-link">
+        <img src="../../assets/img/logo.svg" alt="Etupedia Logo" class="logo">
+        <h1>Etupedia</h1>
+    </a>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" placeholder="Rechercher dans le wiki..." id="search-input">
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <button class="toc-toggle">📑 Sommaire</button>
+</header>
+
+<aside id="themes-list"></aside>
+
+<section id="main">
+    <main>
+        <h2>Algorithmes de tri en Java</h2>
+        <p>
+            Un <strong>algorithme de tri</strong> réorganise les éléments d’une liste selon un ordre (numérique, alphabétique, etc.).
+            L’objectif est d’améliorer d’autres opérations (recherche, fusion…) en choisissant un algorithme adapté au contexte.
+        </p>
+
+        <nav class="see-also">
+            <p><strong>Voir aussi :</strong>
+                <a href="./structures-donnees-java.html">Structures de données en Java</a> •
+                <a href="./uml-analyse-conception.html">UML — Analyse & conception</a>
+            </p>
+        </nav>
+
+        <h3>Notions clés : complexité, stabilité, en place</h3>
+        <ul>
+            <li><strong>Complexité en temps</strong> : comment le temps d’exécution évolue quand la taille des données augmente (notation Big-O).</li>
+            <li><strong>Complexité en espace</strong> : mémoire supplémentaire nécessaire (en plus du tableau à trier).</li>
+            <li><strong>Algorithme en place</strong> : ne requiert pas de tableau supplémentaire de taille proportionnelle à l’entrée.</li>
+            <li><strong>Stabilité</strong> : préserve l’ordre relatif des éléments égaux.</li>
+        </ul>
+
+        <h3>Tris simples (O(n²))</h3>
+
+        <h4>Tri par sélection</h4>
+        <p>
+            Idée : à chaque itération, chercher le plus petit (ou plus grand) élément dans la partie non triée et le placer à la prochaine position libre.
+            Simple, mais toujours en O(n²), même si le tableau est presque trié.
+        </p>
+        <pre><code class="language-java">public static void selectionSort(int[] tab) {
+    int n = tab.length;
+    for (int i = 0; i &lt; n - 1; i++) {
+        int min = i;
+        for (int j = i + 1; j &lt; n; j++) {
+            if (tab[j] &lt; tab[min]) {
+                min = j;
+            }
+        }
+        int tmp = tab[i];
+        tab[i] = tab[min];
+        tab[min] = tmp;
+    }
+}</code></pre>
+
+        <h4>Tri par insertion</h4>
+        <p>
+            Idée : on considère que le début du tableau est trié, puis on insère chaque nouvel élément à sa bonne place dans cette partie.
+            Très efficace pour des tableaux presque triés (meilleur cas en O(n)), mais O(n²) dans le pire cas.
+        </p>
+        <pre><code class="language-java">public static void insertionSort(int[] tab) {
+    for (int i = 1; i &lt; tab.length; i++) {
+        int x = tab[i];
+        int j = i - 1;
+        while (j &gt;= 0 &amp;&amp; tab[j] &gt; x) {
+            tab[j + 1] = tab[j];
+            j--;
+        }
+        tab[j + 1] = x;
+    }
+}</code></pre>
+
+        <h4>Tri à bulles (bubble sort)</h4>
+        <p>
+            Parcourt le tableau et échange les voisins mal ordonnés, en répétant jusqu’à ce qu’il n’y ait plus d’échanges.
+            Facile à comprendre mais généralement moins performant que l’insertion ou la sélection (O(n²) et grosses constantes).
+        </p>
+
+        <h3>Tris plus efficaces (O(n log n))</h3>
+
+        <h4>Tri fusion (merge sort)</h4>
+        <p>
+            Divise le tableau en deux moitiés, trie récursivement chaque moitié, puis fusionne les deux sous-tableaux triés.
+            Complexité en temps O(n log n) dans tous les cas ; nécessite cependant un tableau auxiliaire de taille O(n).
+        </p>
+        <pre><code class="language-java">public static void mergeSort(int[] tab) {
+    if (tab.length &lt;= 1) return;
+    int mid = tab.length / 2;
+    int[] left = Arrays.copyOfRange(tab, 0, mid);
+    int[] right = Arrays.copyOfRange(tab, mid, tab.length);
+    mergeSort(left);
+    mergeSort(right);
+    merge(tab, left, right);
+}</code></pre>
+
+        <h4>Tri rapide (quicksort)</h4>
+        <p>
+            Choisit un pivot, partitionne le tableau en deux parties (éléments &lt; pivot, &gt; pivot), puis trie récursivement les deux côtés.
+            En moyenne, O(n log n), mais O(n²) dans le pire cas si le choix du pivot est mauvais.
+        </p>
+
+        <h3>Choisir le bon tri</h3>
+        <ul>
+            <li><strong>Petit tableau, peu sensible aux perfs</strong> → tri par insertion ou sélection (simple à coder / comprendre).</li>
+            <li><strong>Données très grandes</strong> → tri fusion ou quicksort (en moyenne O(n log n)).</li>
+            <li><strong>Données quasi triées</strong> → tri par insertion fonctionne très bien.</li>
+            <li><strong>Besoin de stabilité</strong> → tri fusion (dans son implémentation classique) est stable, quicksort ne l’est pas forcément.</li>
+        </ul>
+
+        <h3>Tri en Java : Arrays.sort et Collections.sort</h3>
+        <p>
+            En pratique, on utilise souvent les méthodes standard :
+        </p>
+        <ul>
+            <li><code>Arrays.sort(tab)</code> pour les tableaux primitifs et d’objets.</li>
+            <li><code>Collections.sort(liste)</code> (ou <code>liste.sort(comparator)</code>) pour les listes.</li>
+        </ul>
+        <p>
+            Les implémentations internes utilisent des variantes optimisées (par exemple TimSort pour les listes d’objets, mélange de tri fusion et insertion).
+        </p>
+
+        <h2>Sources</h2>
+        <ul>
+            <li><a href="https://en.wikipedia.org/wiki/Sorting_algorithm" target="_blank" rel="noopener">Wikipedia — Sorting algorithm</a></li>
+            <li><a href="https://visualgo.net/en/sorting" target="_blank" rel="noopener">VisuAlgo — Sorting algorithms</a></li>
+            <li><a href="https://www.geeksforgeeks.org/dsa/time-complexities-of-all-sorting-algorithms/" target="_blank" rel="noopener">GeeksforGeeks — Time complexities of sorting algorithms</a></li>
+            <li><a href="https://workat.tech/problem-solving/tutorial/sorting-algorithms-bubble-insertion-selection-sort-veubp86w3e1r" target="_blank" rel="noopener">workat.tech — Bubble/Insertion/Selection sorts</a></li>
+            <li><a href="https://builtin.com/machine-learning/fastest-sorting-algorithm" target="_blank" rel="noopener">BuiltIn — Fastest sorting algorithms</a></li>
+            <li><a href="https://programiz.pro/resources/dsa-merge-quick-insertion-comparision/" target="_blank" rel="noopener">Programiz — Comparing merge, quick, insertion sort</a></li>
+        </ul>
+
+        <article id="ai-section">
+            <p>Besoin d'aide pour comprendre?</p>
+            <button onclick="askAI()" id="ai-ask">Demander à une IA</button>
+        </article>
+    </main>
+
+    <aside id="table-of-contents">
+        <h3>Sommaire</h3>
+        <ul></ul>
+    </aside>
+</section>
+
+<footer>
+    <p>&copy; 2025 Etupedia - Tous droits réservés</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<script src="../../assets/js/ai-ask.js" defer></script>
+<script src="../../assets/js/pages-index.js" defer></script>
+<script src="../../assets/js/page-search.js" defer></script>
+<script src="../../assets/js/sidebar-generator.js" defer></script>
+<script src="../../assets/js/search-ui.js" defer></script>
+<script src="../../assets/js/landing-search.js" defer></script>
+<script src="../../assets/js/toc-generator.js" defer></script>
+</body>
+</html>

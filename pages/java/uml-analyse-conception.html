@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="UML pour l’analyse et la conception : cas d’utilisation, diagrammes de classes (associations, agrégation, composition, héritage) et diagrammes de séquence (messages, fragments combinés).">
+    <title>UML — Analyse & conception - Etupedia</title>
+
+    <link rel="stylesheet" href="../../assets/css/theme.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/components/header.css">
+    <link rel="stylesheet" href="../../assets/css/components/themes-list.css">
+    <link rel="stylesheet" href="../../assets/css/components/table-of-contents.css">
+    <link rel="stylesheet" href="../../assets/css/components/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
+    <meta name="wiki-tags" content="UML,Use Case,Diagrammes de classes,Diagrammes de séquence,Association,Agrégation,Composition,Héritage,Relations UML,Modélisation">
+    <meta name="wiki-category" content="UML & Modélisation">
+    <meta name="wiki-description" content="Résumé des principaux diagrammes UML utilisés en développement : cas d’utilisation, classes, séquences, et leurs relations.">
+
+    <link rel="canonical" href="https://etupedia.netlify.app/pages/web/uml-analyse-conception.html">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:site_name" content="ETUPEDIA">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="UML — Analyse & conception">
+    <meta property="og:description" content="Cas d’utilisation, classes, séquences : les diagrammes UML utiles en projet.">
+    <meta property="og:url" content="https://etupedia.netlify.app/pages/web/uml-analyse-conception.html">
+    <meta property="og:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta property="og:image:alt" content="Logo ETUPEDIA">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="UML — Analyse & conception">
+    <meta name="twitter:description" content="Comprendre les cas d’utilisation, diagrammes de classes et de séquence.">
+    <meta name="twitter:image" content="https://etupedia.netlify.app/assets/img/logo-og.png">
+    <meta name="twitter:image:alt" content="Logo ETUPEDIA">
+
+    <link rel="icon" type="image/x-icon" href="../../assets/img/logo.svg">
+</head>
+<body>
+<header>
+    <a href="/" class="logo-link">
+        <img src="../../assets/img/logo.svg" alt="Etupedia Logo" class="logo">
+        <h1>Etupedia</h1>
+    </a>
+
+    <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-bar" placeholder="Rechercher dans le wiki..." id="search-input">
+        <div class="search-results" id="search-results"></div>
+    </div>
+
+    <button class="toc-toggle">📑 Sommaire</button>
+</header>
+
+<aside id="themes-list"></aside>
+
+<section id="main">
+    <main>
+        <h2>UML pour l’analyse et la conception</h2>
+        <p>
+            UML sert à décrire un système avant (et pendant) le code : ce que fait le système (cas d’utilisation),
+            comment les données sont structurées (classes) et comment les objets collaborent au cours du temps (séquences).
+        </p>
+
+        <nav class="see-also">
+            <p><strong>Voir aussi :</strong>
+                <a href="./structures-donnees-java.html">Structures de données en Java</a> •
+                <a href="./algorithmes-tri-java.html">Algorithmes de tri en Java</a>
+            </p>
+        </nav>
+
+        <!-- CAS D’UTILISATION -->
+        <h3>Diagrammes de cas d’utilisation</h3>
+        <p>
+            Un diagramme de cas d’utilisation montre les interactions entre le système étudié et son environnement
+            (personnes, autres systèmes, matériels) sous forme d’« acteurs » qui utilisent des « cas d’utilisation ».
+        </p>
+
+        <h4>Éléments principaux</h4>
+        <ul>
+            <li><strong>Le système</strong> : encadré qui représente la frontière de l’application (ce qui est dedans/ dehors).</li>
+            <li><strong>Acteurs</strong> : rôles externes (utilisateur, service distant, matériel) qui interagissent avec le système.</li>
+            <li><strong>Cas d’utilisation</strong> : fonctionnalités visibles depuis l’extérieur (scénarios d’usage).</li>
+            <li><strong>Associations</strong> : liens entre acteurs et cas d’utilisation (qui fait quoi, et avec combien d’instances via les multiplicités).</li>
+        </ul>
+
+        <h4>Relations entre cas d’utilisation</h4>
+        <ul>
+            <li><strong>&laquo; include &raquo;</strong> : un cas d’utilisation réutilise systématiquement un autre (comportement commun obligatoire).</li>
+            <li><strong>&laquo; extend &raquo;</strong> : un cas d’utilisation en étend un autre dans certaines conditions (comportement optionnel, déclenché par une condition).</li>
+            <li><strong>Généralisation</strong> (héritage d’acteur ou de cas d’utilisation) : un acteur/cas spécialisé hérite du comportement du général et ajoute des cas spécifiques.</li>
+        </ul>
+
+        <h4>Bonnes pratiques</h4>
+        <ul>
+            <li>Nommer les cas d’utilisation en langage métier (<em>« Gérer les réservations »</em>, pas <em>« clicBouton1 »</em>).</li>
+            <li>Rester au niveau fonctionnel (ce que voit l’utilisateur, pas les classes ni l’UI détaillée).</li>
+            <li>Ne pas surcharger le diagramme : utiliser plusieurs diagrammes si nécessaire.</li>
+        </ul>
+
+        <!-- DIAGRAMMES DE CLASSES – BASES -->
+        <h3>Diagrammes de classes : bases</h3>
+        <p>
+            Un diagramme de classes décrit les types d’objets manipulés par le système, leurs attributs, leurs méthodes
+            et les liens structurels qui les relient.
+        </p>
+
+        <h4>Classe, attributs, opérations</h4>
+        <ul>
+            <li><strong>Classe</strong> : boîte avec 3 parties (nom, attributs, opérations).</li>
+            <li><strong>Attributs</strong> : données portées par la classe (nom : type, éventuelle valeur par défaut).</li>
+            <li><strong>Opérations</strong> : services offerts par la classe (nom(paramètres) : type de retour).</li>
+            <li><strong>Visibilité</strong> :
+                <ul>
+                    <li><code>+</code> : public</li>
+                    <li><code>-</code> : private</li>
+                    <li><code>#</code> : protected</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>Associations & multiplicités</h4>
+        <p>
+            Une association représente un lien structurel durable entre deux classes (ex : un <code>Client</code> passe des <code>Commande</code>).
+            Les multiplicités précisent combien d’objets de chaque côté peuvent être liés (0..1, 1, 0..*, 1..*, etc.).
+        </p>
+
+        <ul>
+            <li><strong>Nom de rôle</strong> : clarifie le sens de l’association (ex : <code>client</code>, <code>commandes</code>).</li>
+            <li><strong>Multiplicité</strong> : exprime les cardinalités (ex : un client peut avoir 0 à N commandes).</li>
+            <li><strong>Navigabilité</strong> : flèche si on précise dans quel sens le code connaît l’autre classe.</li>
+        </ul>
+
+        <!-- DIAGRAMMES DE CLASSES – RELATIONS AVANCÉES -->
+        <h3>Associations avancées : agrégation, composition, héritage, dépendance</h3>
+
+        <h4>Héritage (généralisation)</h4>
+        <p>
+            L’héritage relie une classe plus générale (super-classe) à une classe plus spécifique (sous-classe). La sous-classe
+            hérite des attributs et opérations de la super-classe, et peut en ajouter ou les redéfinir.
+        </p>
+
+        <h4>Agrégation & composition</h4>
+        <ul>
+            <li><strong>Agrégation</strong> (losange blanc) : relation « tout / partie » faible. La partie peut survivre sans le tout (ex : une <code>Équipe</code> agrège des <code>Joueur</code>, qui peuvent exister sans l’équipe).</li>
+            <li><strong>Composition</strong> (losange noir) : relation « tout / partie » forte. La durée de vie de la partie dépend du tout (ex : une <code>Commande</code> compose des <code>LigneCommande</code> qui n’existent pas seules).</li>
+        </ul>
+
+        <h4>Dépendances</h4>
+        <p>
+            Une dépendance (flèche pointillée) exprime qu’une classe utilise une autre de façon ponctuelle (paramètre, variable locale…)
+            sans en faire un lien structurel durable.
+        </p>
+
+        <!-- DIAGRAMMES DE SÉQUENCE -->
+        <h3>Diagrammes de séquence</h3>
+        <p>
+            Un diagramme de séquence montre comment des objets collaborent au cours du temps pour réaliser un scénario, via l’envoi
+            de messages.
+        </p>
+
+        <h4>Éléments essentiels</h4>
+        <ul>
+            <li><strong>Lifelines</strong> : lignes verticales représentant les instances (objets, acteurs) impliquées.</li>
+            <li><strong>Messages</strong> : flèches horizontales (appel de méthode, retour, signal asynchrone).</li>
+            <li><strong>Barres d’activation</strong> : zones pendant lesquelles l’objet est en train d’exécuter une opération.</li>
+        </ul>
+
+        <h4>Fragments combinés</h4>
+        <p>
+            Les fragments combinés permettent d’exprimer des structures de contrôle : alternative (<code>alt</code>), option (<code>opt</code>),
+            boucle (<code>loop</code>), interruption (<code>break</code>…), chacun avec une condition (garde).
+        </p>
+        <ul>
+            <li><strong>alt</strong> : plusieurs branches exclusives (if / else).</li>
+            <li><strong>opt</strong> : exécution facultative (if sans else).</li>
+            <li><strong>loop</strong> : répétition tant que la condition est vraie.</li>
+            <li><strong>break</strong> : sortie anticipée d’un scénario courant.</li>
+        </ul>
+
+        <h3>Faire le lien UML ⇄ Java</h3>
+        <ul>
+            <li>Une <strong>classe UML</strong> ⇄ une classe Java (attributs, méthodes, visibilité).</li>
+            <li>Une <strong>association</strong> ⇄ un attribut qui référence une autre classe, ou une collection d’objets.</li>
+            <li>Un <strong>cas d’utilisation</strong> ⇄ un ensemble de scénarios possibles, qu’on retrouve ensuite en séquences + code des contrôleurs / services.</li>
+            <li>Un <strong>diagramme de séquence</strong> ⇄ un enchaînement d’appels de méthodes entre objets au run-time.</li>
+        </ul>
+
+        <a href="../../assets/img/uml.png"><img src="../../assets/img/uml.png" alt="Uml" style="max-width: 100%; margin-top: 2em; border-radius: 10px;"></a>
+
+        <h2>Sources</h2>
+        <ul>
+            <li><a href="https://sparxsystems.com/resources/tutorials/uml2/use-case-diagram.html" target="_blank" rel="noopener">Sparx Systems — UML 2 Use Case Diagram</a></li>
+            <li><a href="https://www.uml-diagrams.org/use-case-actor-association.html" target="_blank" rel="noopener">uml-diagrams.org — Use case actors & associations</a></li>
+            <li><a href="https://creately.com/blog/diagrams/use-case-diagram-relationships/" target="_blank" rel="noopener">Creately — Use case diagram relationships</a></li>
+            <li><a href="https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-aggregation-vs-composition/" target="_blank" rel="noopener">Visual Paradigm — Association, aggregation, composition</a></li>
+            <li><a href="https://www.geeksforgeeks.org/system-design/unified-modeling-language-uml-class-diagrams/" target="_blank" rel="noopener">GeeksforGeeks — UML Class Diagrams</a></li>
+            <li><a href="https://en.wikipedia.org/wiki/Class_diagram" target="_blank" rel="noopener">Wikipedia — Class diagram</a></li>
+            <li><a href="https://sparxsystems.com/resources/tutorials/uml2/sequence-diagram.html" target="_blank" rel="noopener">Sparx Systems — UML 2 Sequence Diagram</a></li>
+            <li><a href="https://www.visual-paradigm.com/learning/handbooks/software-design-handbook/sequence-diagram.jsp" target="_blank" rel="noopener">Visual Paradigm — Sequence diagrams & fragments</a></li>
+            <li><a href="https://www.uml-diagrams.org/sequence-diagrams-combined-fragment.html" target="_blank" rel="noopener">uml-diagrams.org — Combined fragments</a></li>
+        </ul>
+
+        <article id="ai-section">
+            <p>Besoin d'aide pour comprendre?</p>
+            <button onclick="askAI()" id="ai-ask">Demander à une IA</button>
+        </article>
+    </main>
+
+    <aside id="table-of-contents">
+        <h3>Sommaire</h3>
+        <ul></ul>
+    </aside>
+</section>
+
+<footer>
+    <p>&copy; 2025 Etupedia - Tous droits réservés</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+<script src="../../assets/js/ai-ask.js" defer></script>
+<script src="../../assets/js/pages-index.js" defer></script>
+<script src="../../assets/js/page-search.js" defer></script>
+<script src="../../assets/js/sidebar-generator.js" defer></script>
+<script src="../../assets/js/search-ui.js" defer></script>
+<script src="../../assets/js/landing-search.js" defer></script>
+<script src="../../assets/js/toc-generator.js" defer></script>
+</body>
+</html>
